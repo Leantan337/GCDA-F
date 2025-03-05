@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    <div class="container mt-5">
+        <article>
+            <h1>{{ page.title }}</h1>
+            <p class="meta">{{ page.date }}</p>
+
+            {% if page.image %}
+                {% image page.image width-800 class="img-fluid mb-4" %}
+            {% endif %}
+
+            <div class="intro">{{ page.intro }}</div>
+            
+            {{ page.body|richtext }}
+
+            {% if page.categories.all %}
+                <div class="categories mt-4">
+                    <h5>Categories:</h5>
+                    <ul class="list-inline">
+                        {% for category in page.categories.all %}
+                            <li class="list-inline-item">
+                                <span class="badge bg-secondary">{{ category.name }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="comments-section">
+                <h3>Comments</h3>
+                {% for comment in page.comments.all %}
+                    {% if comment.is_approved %}
+                        <div class="comment">
+                            <p>{{ comment.text }}</p>
+                            <small>By {{ comment.author }} on {{ comment.created_at }}</small>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </article>
+    </div>
+{% endblock %}
