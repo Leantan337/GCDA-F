@@ -3,18 +3,34 @@ Django settings for GCDA project.
 """
 
 import os
+import sys
 from pathlib import Path
+from urllib.parse import urlparse
+
+# Load env variables
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-your-secret-key-here'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
+# Add Render domains to allowed hosts
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# Add any *.onrender.com domains
+ALLOWED_HOSTS.extend(['.onrender.com'])
 
 # Application definition
 # Add this to your INSTALLED_APPS
@@ -72,6 +88,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -105,12 +122,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use PostgreSQL on Render, SQLite locally
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    # Parse database URL for PostgreSQL on Render
+    db_url = urlparse(DATABASE_URL)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': db_url.path[1:],
+            'USER': db_url.username,
+            'PASSWORD': db_url.password,
+            'HOST': db_url.hostname,
+            'PORT': db_url.port,
+        }
     }
-}
+else:
+    # Use SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -141,6 +175,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# Enable WhiteNoise for static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -159,7 +196,12 @@ WAGTAILSEARCH_BACKENDS = {
 }
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend
-WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
+if DEBUG:
+    WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
+elif RENDER_EXTERNAL_HOSTNAME:
+    WAGTAILADMIN_BASE_URL = f'https://{RENDER_EXTERNAL_HOSTNAME}'
+else:
+    WAGTAILADMIN_BASE_URL = 'https://gcda.onrender.com'
 
 # Django allauth settings
 
@@ -182,8 +224,16 @@ ACCOUNT_RATE_LIMITS = {
     'login_failed': {'rate': '5/5m', 'timeout': '300s'}
 }
 
-# Email settings (for development)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email settings (use console in development, configure for production)
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # Add these settings for crispy-forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
