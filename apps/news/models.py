@@ -1,13 +1,29 @@
 """
 News and blog functionality for the website.
 """
+from django import forms
 from django.db import models
 from django.utils import timezone
 from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images import get_image_model_string
 from wagtail.search import index
 from django.conf import settings
+from wagtail.images.models import Image
+
+class NewsCategory(models.Model):
+    """Categories for news articles."""
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=80, unique=True)
+    
+    class Meta:
+        verbose_name = "News Category"
+        verbose_name_plural = "News Categories"
+        
+    def __str__(self):
+        return self.name
 
 class NewsIndexPage(Page):
     """Container page for news articles."""
@@ -32,15 +48,16 @@ class NewsIndexPage(Page):
 
 class NewsPage(Page):
     """Individual news article page."""
-    date = models.DateField(
-        "Post date",
-        default=timezone.now
-    )
-    intro = models.CharField(
-        max_length=250,
-        help_text='Brief introduction for the news article'
-    )
+    date = models.DateField("Post date", default=timezone.now)
+    intro = models.CharField(max_length=250, help_text='Brief introduction')
     body = RichTextField()
+    featured_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
@@ -48,12 +65,10 @@ class NewsPage(Page):
         on_delete=models.SET_NULL,
         related_name='news_articles'
     )
-    featured_image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
+    categories = models.ManyToManyField(
+        NewsCategory,
         blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
+        related_name='news_pages'
     )
 
     search_fields = Page.search_fields + [
@@ -67,6 +82,7 @@ class NewsPage(Page):
         FieldPanel('intro'),
         FieldPanel('body'),
         FieldPanel('featured_image'),
+        FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
     ]
 
     class Meta:

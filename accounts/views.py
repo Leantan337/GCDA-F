@@ -19,4 +19,26 @@ def profile(request):
     })
 
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html') 
+    return render(request, 'accounts/dashboard.html')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .forms import CustomLoginForm, CustomRegistrationForm
+
+class CustomLoginView(LoginView):
+    form_class = CustomLoginForm
+    template_name = 'accounts/login.html'
+    success_url = reverse_lazy('core:home')  # Update this line
+
+class CustomRegistrationView(CreateView):
+    form_class = CustomRegistrationForm
+    template_name = 'accounts/register.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response

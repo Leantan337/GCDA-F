@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - GCDA{% endblock %}
+
+{% block hero %}
+<section id="hero" class="d-flex align-items-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1">
+        <h1>Welcome to GCDA</h1>
+        <h2>Empowering Communities Through Development</h2>
+        <div class="d-flex justify-content-center justify-content-lg-start">
+          <a href="#about" class="btn-get-started scrollto">Get Started</a>
+          <a href="{% url 'news_index' %}" class="btn-learn-more">Latest News</a>
+        </div>
+      </div>
+      <div class="col-lg-6 order-1 order-lg-2 hero-img">
+        <img src="{% static 'assets/img/hero-img.png' %}" class="img-fluid animated" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section id="about" class="about">
+  <div class="container">
+    <div class="section-title">
+      <h2>About Us</h2>
+      <p>GCDA is dedicated to fostering community development and empowerment through various initiatives and programs.</p>
+    </div>
+
+    <div class="row content">
+      <div class="col-lg-6">
+        <p>
+          Our mission is to create sustainable development opportunities by:
+        </p>
+        <ul>
+          <li><i class="ri-check-double-line"></i> Supporting local initiatives</li>
+          <li><i class="ri-check-double-line"></i> Providing educational resources</li>
+          <li><i class="ri-check-double-line"></i> Building community partnerships</li>
+        </ul>
+      </div>
+      <div class="col-lg-6 pt-4 pt-lg-0">
+        <p>
+          Through our programs and initiatives, we strive to make a lasting impact on communities and create positive change.
+        </p>
+        <a href="#" class="btn-learn-more">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="news" class="news section-bg">
+  <div class="container">
+    <div class="section-title">
+      <h2>Latest News</h2>
+      <p>Stay updated with our latest news and developments</p>
+    </div>
+
+    <div class="row">
+      {% for news_item in latest_news %}
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="news-item">
+            {% if news_item.image %}
+              <img src="{{ news_item.image.url }}" class="img-fluid" alt="{{ news_item.title }}">
+            {% endif %}
+            <div class="news-content">
+              <h4><a href="{{ news_item.url }}">{{ news_item.title }}</a></h4>
+              <p>{{ news_item.intro|truncatewords:30 }}</p>
+              <a href="{{ news_item.url }}" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

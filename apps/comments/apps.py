@@ -1,5 +1,8 @@
 from django.apps import AppConfig
-
+from django.utils.functional import cached_property
 class CommentsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.comments'  # Make sure this matches your directory structure 
+    @cached_property
+    def default_auto_field(self):
+        return 'django.db.models.BigAutoField'
+    
+    name = 'apps.comments'

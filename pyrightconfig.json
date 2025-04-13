@@ -1,0 +1,9 @@
+{
+    "reportIndexIssue": false,
+    "reportAttributeAccessIssue": false,
+    "reportArgumentType": false,
+    "reportPossiblyUnboundVariable": false,
+    "exclude": [
+        "**/site-packages"
+    ]
+}

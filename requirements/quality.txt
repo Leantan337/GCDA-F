@@ -1,0 +1,12 @@
+# Code Quality Tools
+black==24.2.0  # Code formatter
+isort==5.13.2  # Import sorter
+flake8==7.0.0  # Code linter
+pylint==3.0.3  # Static code analyzer
+pytest==8.0.2  # Testing framework
+pytest-django==4.8.0  # Django test integration
+pytest-cov==4.1.0  # Test coverage
+mypy==1.8.0  # Type checking
+django-stubs==4.2.7  # Django type stubs
+wagtail-factories==4.1.0  # Factory Boy for Wagtail
+factory-boy==3.3.0  # Test data generation

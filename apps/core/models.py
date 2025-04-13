@@ -9,6 +9,7 @@ from wagtail.fields import RichTextField
 from wagtail.models import Page, Orderable
 from wagtail.images import get_image_model_string
 
+
 class HomePage(Page):
     """Home page model."""
     template = 'home/home_page.html'
@@ -66,7 +67,37 @@ class HomePage(Page):
             FieldPanel('hero_video_url'),
             FieldPanel('hero_image'),
         ], heading="Hero Section"),
-
+        
+        MultiFieldPanel([
+            FieldPanel('about_title'),
+            FieldPanel('about_subtitle'),
+            FieldPanel('about_description'),
+            FieldPanel('about_content_secondary'),
+            FieldPanel('about_cta_text'),
+            FieldPanel('about_cta_link'),
+        ], heading="About Section"),
+        
+        MultiFieldPanel([
+            FieldPanel('services_title'),
+            FieldPanel('services_subtitle'),
+            FieldPanel('services_description'),
+        ], heading="Services Section"),
+        
+        MultiFieldPanel([
+            FieldPanel('team_title'),
+            FieldPanel('team_subtitle'),
+            FieldPanel('team_description'),
+        ], heading="Team Section"),
+        
+        MultiFieldPanel([
+            FieldPanel('contact_title'),
+            FieldPanel('contact_subtitle'),
+            FieldPanel('contact_description'),
+            FieldPanel('address'),
+            FieldPanel('email'),
+            FieldPanel('phone'),
+        ], heading="Contact Section"),
+        
         InlinePanel('services', label="Services"),
         InlinePanel('team_members', label="Team Members"),
         InlinePanel('featured_programs', label="Featured Programs"),
@@ -75,4 +106,69 @@ class HomePage(Page):
     class Meta:
         verbose_name = "Homepage"
 
-# Keep the related Orderable models in the same file
+
+class ServiceOrderable(Orderable):
+    """Service item for the home page."""
+    page = ParentalKey('HomePage', on_delete=models.CASCADE, related_name='services')
+    title = models.CharField(max_length=100)
+    description = RichTextField()
+    icon = models.CharField(max_length=50, help_text="Font Awesome icon class name")
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('description'),
+        FieldPanel('icon'),
+    ]
+
+    def __str__(self):
+        return self.title
+
+
+class TeamMemberOrderable(Orderable):
+    """Team member item for the home page."""
+    page = ParentalKey('HomePage', on_delete=models.CASCADE, related_name='team_members')
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    bio = RichTextField()
+    photo = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('position'),
+        FieldPanel('bio'),
+        FieldPanel('photo'),
+    ]
+
+    def __str__(self):
+        return self.name
+
+
+class FeaturedProgramOrderable(Orderable):
+    """Featured program item for the home page."""
+    page = ParentalKey('HomePage', on_delete=models.CASCADE, related_name='featured_programs')
+    title = models.CharField(max_length=100)
+    description = RichTextField()
+    image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    link = models.URLField(blank=True)
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('description'),
+        FieldPanel('image'),
+        FieldPanel('link'),
+    ]
+
+    def __str__(self):
+        return self.title

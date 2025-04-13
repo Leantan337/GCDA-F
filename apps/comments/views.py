@@ -12,4 +12,5 @@ def add_comment(request, page_id):
             comment.author = request.user
             comment.page = Page.objects.get(id=page_id)
             comment.save()
-    return redirect(request.META.get('HTTP_REFERER', '/')) 
+            comment.track_submission(request)
+    return redirect(request.META.get('HTTP_REFERER', '/'))

@@ -17,6 +17,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
+# Add this to your INSTALLED_APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,32 +25,49 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'django.contrib.sites',
+
     # Wagtail apps
+    'wagtail',
+    'wagtail.admin',
+    'wagtail.documents',
+    'wagtail.snippets',
+    'wagtail.users',
+    'wagtail.images',
+    'wagtail.embeds',
+    'wagtail.search',
+    'wagtail.sites',
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail',
-    
-    'modelcluster',
-    'taggit',
-    
-    # Django allauth
-    'django.contrib.sites',
+    'taggit',  # Add this line for tagging support
+
+    # Third-party apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    
-    # Your apps
-    'apps.comments',
+    'crispy_forms',
+    'crispy_bootstrap4',  # Add this line
+
+    # Local apps
+    'accounts.apps.AccountsConfig',
+    'apps.core.apps.CoreConfig',
+    'apps.news.apps.NewsConfig',  # Make sure this matches your app configuration
+    'apps.donations.apps.DonationsConfig',
+    'apps.engagement.apps.EngagementConfig',
+    'apps.comments.apps.CommentsConfig',
 ]
+
+# Add this setting (usually ID 1 is the default site)
+SITE_ID = 1
+
+# django-allauth configuration
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# allauth settings
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,7 +87,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'static/templates'),
+            os.path.join(BASE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -143,8 +161,29 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
 
 # Django allauth settings
-SITE_ID = 1
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-] 
+
+# Add this setting for CustomUser model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Authentication settings
+LOGIN_URL = 'accounts:login'
+LOGOUT_REDIRECT_URL = '/'
+
+# django-allauth settings
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+
+# Remove these deprecated settings
+# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
+
+# Use this new format instead
+ACCOUNT_RATE_LIMITS = {
+    'login_failed': {'rate': '5/5m', 'timeout': '300s'}
+}
+
+# Email settings (for development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Add these settings for crispy-forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"

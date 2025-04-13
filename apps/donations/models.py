@@ -7,6 +7,7 @@ from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel
 from django.core.validators import MinValueValidator
+from django.utils import timezone
 
 class DonationPage(Page):
     """Page for accepting donations."""
@@ -42,7 +43,7 @@ class DonationCampaign(models.Model):
         validators=[MinValueValidator(0)]
     )
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(default=timezone.now)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -92,10 +93,10 @@ class Donation(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
-    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS)
-    transaction_id = models.CharField(max_length=100, unique=True)
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='card')
+    transaction_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
     is_anonymous = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    donation_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
         max_length=20,
         choices=DONATION_STATUS,
@@ -103,7 +104,7 @@ class Donation(models.Model):
     )
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-donation_date']
         verbose_name = "Donation"
         verbose_name_plural = "Donations"
 

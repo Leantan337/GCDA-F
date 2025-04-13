@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <article>
+        <h1>{{ news_item.title }}</h1>
+        <p class="text-muted">{{ news_item.date|date:"F j, Y" }}</p>
+        
+        {% if news_item.featured_image %}
+            {% image news_item.featured_image fill-800x450 as photo %}
+            <img src="{{ photo.url }}" class="img-fluid mb-4" alt="{{ news_item.title }}">
+        {% endif %}
+        
+        <div class="news-content">
+            {{ news_item.body|richtext }}
+        </div>
+    </article>
+</div>
+{% endblock %}

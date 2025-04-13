@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Profile Overview -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" class="rounded-circle img-fluid mb-3" style="max-width: 150px;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="rounded-circle img-fluid mb-3">
+                    {% endif %}
+                    <h4>{{ user.get_full_name|default:user.username }}</h4>
+                    <p class="text-muted">
+                        <i class="fas fa-envelope"></i> {{ user.email }}
+                        {% if user.phone_number %}
+                            <br><i class="fas fa-phone"></i> {{ user.phone_number }}
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-8">
+            <!-- User Bio -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">About Me</h5>
+                </div>
+                <div class="card-body">
+                    {% if user.bio %}
+                        <p>{{ user.bio }}</p>
+                    {% else %}
+                        <p class="text-muted">No bio provided yet. <a href="{% url 'accounts:profile' %}">Add one now!</a></p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Activity Overview -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="activity-item">
+                                <h6>Comments</h6>
+                                <p class="h3 text-primary">{{ user.comments.count }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="activity-item">
+                                <h6>Member Since</h6>
+                                <p class="text-muted">{{ user.date_joined|date:"F j, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Comments -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Comments</h5>
+                </div>
+                <div class="card-body">
+                    {% if user.comments.all %}
+                        <div class="list-group">
+                            {% for comment in user.comments.all|slice:":5" %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">On: {{ comment.page.title }}</h6>
+                                        <small>{{ comment.created_at|timesince }} ago</small>
+                                    </div>
+                                    <p class="mb-1">{{ comment.text|truncatewords:30 }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No comments yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,8 @@
 from django.apps import AppConfig
-
-
+from django.utils.functional import cached_property
 class NewsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'news'
+    @cached_property
+    def default_auto_field(self):
+        return 'django.db.models.BigAutoField'
+    
+    name = 'apps.news'

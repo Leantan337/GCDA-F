@@ -25,32 +25,35 @@ The GCDA website is a comprehensive Django-based NGO website using Wagtail CMS. 
   - No configuration needed
   - Suitable for development
 
+### Authentication ✅
+- Django Allauth
+  - Email authentication (Completed)
+    - Login page styled ✅
+    - Signup page styled ✅
+    - Email verification page styled ✅
+  - Custom user model implemented ✅
+  - Rate limiting configured ✅
+  - Password reset functionality ✅
+
 ### Frontend
 - **Framework**: Bootstrap 5
-  - Responsive grid system
+  - Responsive grid system implemented ✅
   - Mobile-first design
   - Custom components
+    - Authentication pages styled ✅
+    - Homepage sections (In Progress)
+    - Navigation (In Progress)
 - **JavaScript Libraries**:
   - AOS (Animate On Scroll)
   - Swiper for carousels
   - GLightbox for image popups
   - Custom JavaScript for interactions
-- **CSS**: 
-  - Custom SCSS/CSS
-  - Bootstrap customization
-  - Responsive design
 
-### Authentication
-- Django Allauth
-  - Email authentication
-  - Social auth (ready for implementation)
-  - Custom user model support
-
-### Forms
+### Forms ✅
 - Crispy Forms
-  - Bootstrap 5 integration
-  - Form layouts
-  - Field customization
+  - Bootstrap 5 integration completed ✅
+  - Form layouts styled ✅
+  - Field customization implemented ✅
 
 ## Project Structure
 
@@ -455,8 +458,10 @@ python manage.py compilemessages
 ### Core Team
 - Hyab Welay (CEO & Founder)
 - Development Team
-- Content Team
-- Design Team
+- Full Stack developer by
+  - Natnael Zeru 
+  - Content Team
+  - Design Team
 
 ### Contributors
 - Community contributors
@@ -476,3 +481,32 @@ All rights reserved GCDA
 - Usage terms
 - Content rights
 - Liability limitations
+```
+
+## Current Progress
+
+### Completed Features ✅
+1. Authentication System
+   - User registration
+   - Login/Logout
+   - Email verification
+   - Password reset
+2. Frontend Styling
+   - Authentication pages
+   - Form layouts
+3. Backend Configuration
+   - Django setup
+   - Database configuration
+   - Email settings
+
+### In Progress 🚧
+1. Homepage Development
+2. Navigation System
+3. Content Management
+4. User Dashboard
+
+### Pending 📋
+1. Donation System
+2. News Section
+3. Event Management
+4. Community Features

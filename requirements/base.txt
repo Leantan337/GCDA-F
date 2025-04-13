@@ -5,3 +5,4 @@ django-crispy-forms>=2.1
 django-modeltranslation>=0.18.11
 Pillow>=10.0.0
 python-dotenv>=1.0.0
+wagtail-modeladmin>=1.0.0  # Add this line

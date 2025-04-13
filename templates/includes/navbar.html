@@ -1,0 +1,30 @@
+{% load static %}
+<!-- ======= Header ======= -->
+<header id="header" class="d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-between">
+
+    <h1 class="logo"><a href="{% url 'core:home' %}">GCDA<span>.HIYAB WELAY</span></a></h1>
+    <!-- Uncomment below if you prefer to use an image logo -->
+    <!-- <a href="{% url 'core:home' %}" class="logo"><img src="{% static 'assets/img/logo.png' %}" alt=""></a>-->
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" href="{% url 'core:home' %}#hero">Home</a></li>
+        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#about">About</a></li>
+        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#services">Our Work</a></li>
+        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#team">Team</a></li>
+        <li><a class="nav-link scrollto" href="{% url 'news:news_list' %}">News</a></li>
+        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#contact">Contact</a></li>
+        {% if user.is_authenticated %}
+          <li><a class="nav-link scrollto" href="{% url 'accounts:profile' %}">Profile</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'accounts:logout' %}">Logout</a></li>
+        {% else %}
+          <li><a class="nav-link scrollto" href="{% url 'accounts:login' %}">Login</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'accounts:register' %}">Sign Up</a></li>
+        {% endif %}
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+
+  </div>
+</header><!-- End Header -->

@@ -15,9 +15,10 @@ def main():
             "Couldn't import Django. Are you sure it's installed?"
         ) from exc
 
-    # Add the project root directory to the Python path
+    # Add both the project root and the apps directory to the Python path
     current_path = Path(__file__).parent
     sys.path.append(str(current_path))
+    sys.path.append(str(current_path / 'apps'))
     
     execute_from_command_line(sys.argv)
 

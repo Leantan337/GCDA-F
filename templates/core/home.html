@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Green Community Development Association{% endblock %}
+
+{% block hero %}
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center">
+  <div class="container" data-aos="zoom-out" data-aos-delay="100">
+    <h1>Welcome to <span>Green Community Development Association</span></h1>
+    <h2>We are team of talented Home farming Workers</h2>
+    <div class="d-flex">
+      <a href="#about" class="btn-get-started scrollto">Get Started</a>
+      <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+    </div>
+  </div>
+</section><!-- End Hero -->
+{% endblock %}
+
+{% block content %}
+<!-- ======= About Section ======= -->
+<section id="about" class="about section-bg">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>About</h2>
+      <h3>Find Out <span>About Us</span></h3>
+      <p>Learn more about our mission and vision to empower communities and foster sustainable development.</p>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+        <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="">
+      </div>
+      <div class="col-lg-6 pt-4 pt-lg-0 content d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
+        <h3>Empowering communities through sustainable development initiatives.</h3>
+        <p class="fst-italic">
+          Our organization focuses on creating lasting positive change in communities through various programs and initiatives.
+        </p>
+        <ul>
+          <li>
+            <i class="bx bx-store-alt"></i>
+            <div>
+              <h5>Community-Based Development</h5>
+              <p>Working directly with communities to identify and address their unique needs and challenges</p>
+            </div>
+          </li>
+          <li>
+            <i class="bx bx-images"></i>
+            <div>
+              <h5>Sustainable Agriculture</h5>
+              <p>Promoting agricultural practices that are environmentally friendly and economically viable</p>
+            </div>
+          </li>
+        </ul>
+        <p>
+          At GCDA, we believe that sustainable development is key to creating thriving communities. Through our programs, we aim to empower individuals and communities to achieve self-sufficiency and improve their quality of life.
+        </p>
+      </div>
+    </div>
+  </div>
+</section><!-- End About Section -->
+
+<!-- ======= Services Section ======= -->
+<section id="services" class="services">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Services</h2>
+      <h3>Check our <span>Services</span></h3>
+      <p>We offer a variety of programs and services designed to address community needs and promote sustainable development.</p>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bxl-dribbble"></i></div>
+          <h4><a href="">Agricultural Development</a></h4>
+          <p>Supporting farmers with training, resources, and sustainable farming techniques</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-file"></i></div>
+          <h4><a href="">Education Programs</a></h4>
+          <p>Providing educational opportunities and resources to community members of all ages</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-tachometer"></i></div>
+          <h4><a href="">Health Initiatives</a></h4>
+          <p>Improving access to healthcare services and promoting healthy lifestyles</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-world"></i></div>
+          <h4><a href="">Environmental Conservation</a></h4>
+          <p>Implementing projects that protect natural resources and promote environmental sustainability</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-slideshow"></i></div>
+          <h4><a href="">Community Engagement</a></h4>
+          <p>Fostering community involvement and empowerment through various initiatives</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-arch"></i></div>
+          <h4><a href="">Infrastructure Development</a></h4>
+          <p>Supporting the development of essential community infrastructure and facilities</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- End Services Section -->
+
+<!-- ======= Testimonials Section ======= -->
+<section id="testimonials" class="testimonials">
+  <div class="container" data-aos="zoom-in">
+    <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <img src="{% static 'assets/img/testimonials/testimonials-1.jpg' %}" class="testimonial-img" alt="">
+            <h3>John Doe</h3>
+            <h4>Community Member</h4>
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              The agricultural training program has completely transformed my farming practices. My yields have increased significantly, and I'm now able to provide better for my family.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <img src="{% static 'assets/img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="">
+            <h3>Jane Smith</h3>
+            <h4>Program Participant</h4>
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              The educational support provided by GCDA has enabled me to continue my studies. I'm grateful for the opportunity to pursue my education and build a better future.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <img src="{% static 'assets/img/testimonials/testimonials-3.jpg' %}" class="testimonial-img" alt="">
+            <h3>Sam Johnson</h3>
+            <h4>Local Leader</h4>
+            <p>
+              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+              GCDA's work in our community has brought about positive changes. The infrastructure development projects have improved access to essential services for many families.
+              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section><!-- End Testimonials Section -->
+
+<!-- ======= Team Section ======= -->
+<section id="team" class="team section-bg">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Team</h2>
+      <h3>Our Dedicated <span>Team</span></h3>
+      <p>Meet the passionate individuals who work tirelessly to drive our mission forward.</p>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+        <div class="member">
+          <div class="member-img">
+            <img src="{% static 'assets/img/team/team-1.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Thomas Brown</h4>
+            <span>Executive Director</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+        <div class="member">
+          <div class="member-img">
+            <img src="{% static 'assets/img/team/team-2.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Sarah Williams</h4>
+            <span>Program Director</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+        <div class="member">
+          <div class="member-img">
+            <img src="{% static 'assets/img/team/team-3.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Michael Davis</h4>
+            <span>Agricultural Specialist</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+        <div class="member">
+          <div class="member-img">
+            <img src="{% static 'assets/img/team/team-4.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Emily Wilson</h4>
+            <span>Community Outreach Coordinator</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- End Team Section -->
+
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Contact</h2>
+      <h3><span>Contact Us</span></h3>
+      <p>Get in touch with us to learn more about our programs or to discuss potential collaborations.</p>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-lg-6">
+        <div class="info-box mb-4">
+          <i class="bx bx-map"></i>
+          <h3>Our Address</h3>
+          <p>123 Street Name, City, State 12345, Country</p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="info-box  mb-4">
+          <i class="bx bx-envelope"></i>
+          <h3>Email Us</h3>
+          <p>info@gcda.org</p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="info-box  mb-4">
+          <i class="bx bx-phone-call"></i>
+          <h3>Call Us</h3>
+          <p>+1 234 567 8890</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-lg-6 ">
+        <iframe class="mb-4 mb-lg-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.2157146068545!2d-73.98668908461396!3d40.75889197932744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDE0JzU3LjAiTiA3M8KwMjcnNTAuNCJX!5e0!3m2!1sen!2sus!4v1586447673849!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 384px;" allowfullscreen></iframe>
+      </div>
+
+      <div class="col-lg-6">
+        <form action="{% url 'core:contact' %}" method="post" role="form" class="php-email-form">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="col form-group">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+          </div>
+          <div class="my-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+          </div>
+          <div class="text-center"><button type="submit">Send Message</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section><!-- End Contact Section -->
+
+<!-- ======= News Section ======= -->
+<section id="news" class="portfolio">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>News</h2>
+      <h3>Latest <span>News</span></h3>
+      <p>Stay updated with our recent activities, events, and announcements.</p>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+      {% for news_item in latest_news %}
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+        <div class="portfolio-item">
+          {% if news_item.image %}
+          <img src="{{ news_item.image.url }}" class="img-fluid" alt="{{ news_item.title }}">
+          {% else %}
+          <img src="{% static 'assets/img/portfolio/news-default.jpg' %}" class="img-fluid" alt="{{ news_item.title }}">
+          {% endif %}
+          <div class="portfolio-info">
+            <h4>{{ news_item.title }}</h4>
+            <p>{{ news_item.intro|truncatewords:15 }}</p>
+            <a href="{{ news_item.url }}" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center">
+        <p>No news items available at this time. Please check back later.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'news:news_list' %}" class="btn-learn-more">View All News</a>
+    </div>
+  </div>
+</section><!-- End News Section -->
+{% endblock %}
