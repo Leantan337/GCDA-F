@@ -1,0 +1,8 @@
+{% load wagtailadmin_tags modeladmin_tags %}
+<td{% if field_name in view.get_empty_value_display_fields %} class="no-data"{% endif %}>
+    {% if field_name in view.get_empty_value_display_fields and not object|get_field_display:field_name %}
+        -
+    {% else %}
+        {{ object|get_field_display:field_name }}
+    {% endif %}
+</td>

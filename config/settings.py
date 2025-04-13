@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'wagtail.sites',
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail_modeladmin',  # External package for ModelAdmin support
     'taggit',  # Add this line for tagging support
 
     # Third-party apps

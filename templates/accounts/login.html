@@ -10,15 +10,8 @@
                         <h2 class="text-center mb-4">Login</h2>
                         <form method="post">
                             {% csrf_token %}
-                            {% for field in form %}
-                                <div class="form-group mb-3">
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <small class="text-danger">{{ field.errors|join:", " }}</small>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                            {{ form.as_p }}
+                            <button type="submit">Login</button>
                         </form>
                         <div class="text-center mt-3">
                             <p>Don't have an account? <a href="{% url 'accounts:register' %}">Register here</a></p>

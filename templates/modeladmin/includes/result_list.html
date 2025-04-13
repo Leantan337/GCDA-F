@@ -1,0 +1,23 @@
+{% load wagtailadmin_tags wagtail_modeladmin_tags %}
+
+{% if objects %}
+    <table class="listing">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Slug</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for object in page_obj %}
+                <tr>
+                    <td>{{ object.name }}</td>
+                    <td>{{ object.slug }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>{% trans "No items have been created yet." %}</p>
+{% endif %}

@@ -1,0 +1,32 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n wagtailadmin_tags %}
+{% block titletag %}{{ view.page_title }}{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    {{ view.media.css }}
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    {{ view.media.js }}
+{% endblock %}
+
+{% block content %}
+    {% block header %}
+        {% include "wagtailadmin/shared/header.html" with title=view.page_title icon=view.header_icon %}
+    {% endblock %}
+
+    <div class="nice-padding">
+        {% block content_main %}
+            <div id="listing-results">
+                {% include "modeladmin/includes/result_list.html" %}
+            </div>
+            {% block pagination %}
+                {% if paginator %}
+                    {% include "wagtailadmin/shared/pagination_nav.html" with items=page_obj linkurl=index_url %}
+                {% endif %}
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}

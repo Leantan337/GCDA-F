@@ -7,7 +7,10 @@ app_name = 'accounts'
 urlpatterns = [
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('register/', views.CustomRegistrationView.as_view(), name='register'),
-    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('logout/', LogoutView.as_view(
+        next_page='core:home',
+        template_name='accounts/logout.html'
+    ), name='logout'),
     path('profile/', views.profile, name='profile'),
-    path('dashboard/', views.dashboard, name='dashboard'),  # Add this line
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]

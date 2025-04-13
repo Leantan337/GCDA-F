@@ -10,7 +10,7 @@ def profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your profile has been updated!')
-            return redirect('profile')
+            return redirect('accounts:profile')
     else:
         form = CustomUserChangeForm(instance=request.user)
     
@@ -33,12 +33,17 @@ class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
     success_url = reverse_lazy('core:home')  # Update this line
 
+from django.contrib.auth import login
+from allauth.account.utils import complete_signup
+from allauth.account import app_settings as allauth_settings
+
 class CustomRegistrationView(CreateView):
     form_class = CustomRegistrationForm
     template_name = 'accounts/register.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('core:home')
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        login(self.request, self.object)
+        user = form.save()
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return response
