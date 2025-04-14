@@ -2,30 +2,68 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
-<section class="news-detail section">
+<!-- Hero/Banner Section -->
+<section class="news-hero-section position-relative" style="background: linear-gradient(rgba(34,34,34,0.7), rgba(34,34,34,0.7)), url('/static/assets/img/hero-bg.jpg') center/cover no-repeat; min-height: 260px; display: flex; align-items: center;">
+  <div class="container text-white">
+    <h1 class="display-4 fw-bold mb-2">Blog Details</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="/" class="text-white-50">Home</a></li>
+        <li class="breadcrumb-item active text-white" aria-current="page">Blog Details</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="news-detail section py-5">
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
+      <!-- Main Article -->
       <div class="col-lg-8">
-        <article class="news-article">
-          <header class="news-header">
-            <h1>{{ page.title }}</h1>
-            <div class="meta">
-              <span class="date">{{ page.date|date:"F j, Y" }}</span>
-              {% if page.author %}
-                <span class="author">by {{ page.author }}</span>
-              {% endif %}
-            </div>
-          </header>
-
+        <article class="news-article card shadow p-4 mb-5 bg-white rounded-4 border-0">
           {% if page.featured_image %}
-            {% image page.featured_image width-800 as photo %}
-            <img src="{{ photo.url }}" class="img-fluid mb-4" alt="{{ page.title }}">
+            {% image page.featured_image fill-900x400 as photo %}
+            <div class="news-featured-image mb-4 text-center">
+              <img src="{{ photo.url }}" class="img-fluid rounded-4 shadow-sm w-100" alt="{{ page.title }}" style="max-height:400px; object-fit:cover;">
+            </div>
           {% endif %}
-
-          <div class="news-content">
+          <div class="meta mb-3 text-muted d-flex align-items-center gap-3">
+            <span class="date"><i class="bi bi-calendar-event"></i> {{ page.date|date:"F j, Y" }}</span>
+            {% if page.author %}
+              <span class="author"><i class="bi bi-person-circle"></i> {{ page.author }}</span>
+            {% endif %}
+          </div>
+          <h2 class="fw-bold mb-3">{{ page.title }}</h2>
+          <div class="news-content lead">
             {{ page.body|richtext }}
           </div>
         </article>
+      </div>
+      <!-- Sidebar (optional, for future use) -->
+      <div class="col-lg-4 d-none d-lg-block">
+        <aside>
+          <div class="card mb-4 shadow-sm border-0 rounded-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold mb-3">Search</h5>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2 rounded-pill" type="search" placeholder="Search.." aria-label="Search">
+                <button class="btn btn-outline-success rounded-pill" type="submit"><i class="bi bi-search"></i></button>
+              </form>
+            </div>
+          </div>
+          <div class="card mb-4 shadow-sm border-0 rounded-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold mb-3">Recent Posts</h5>
+              <p class="text-muted small">(Coming soon)</p>
+            </div>
+          </div>
+          <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold mb-3">Categories</h5>
+              <p class="text-muted small">(Coming soon)</p>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   </div>

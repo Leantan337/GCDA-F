@@ -25,22 +25,22 @@ The GCDA website is a comprehensive Django-based NGO website using Wagtail CMS. 
   - No configuration needed
   - Suitable for development
 
-### Authentication ✅
+### Authentication 
 - Django Allauth
   - Email authentication (Completed)
-    - Login page styled ✅
-    - Signup page styled ✅
-    - Email verification page styled ✅
-  - Custom user model implemented ✅
-  - Rate limiting configured ✅
-  - Password reset functionality ✅
+    - Login page styled 
+    - Signup page styled 
+    - Email verification page styled 
+  - Custom user model implemented 
+  - Rate limiting configured 
+  - Password reset functionality 
 
 ### Frontend
 - **Framework**: Bootstrap 5
-  - Responsive grid system implemented ✅
+  - Responsive grid system implemented 
   - Mobile-first design
   - Custom components
-    - Authentication pages styled ✅
+    - Authentication pages styled 
     - Homepage sections (In Progress)
     - Navigation (In Progress)
 - **JavaScript Libraries**:
@@ -49,126 +49,59 @@ The GCDA website is a comprehensive Django-based NGO website using Wagtail CMS. 
   - GLightbox for image popups
   - Custom JavaScript for interactions
 
-### Forms ✅
+### Forms 
 - Crispy Forms
-  - Bootstrap 5 integration completed ✅
-  - Form layouts styled ✅
-  - Field customization implemented ✅
+  - Bootstrap 5 integration completed 
+  - Form layouts styled 
+  - Field customization implemented 
 
 ## Project Structure
 
 ### Directory Layout
 ```
-GCDA/
+GCDA-F/
 ├── apps/
-│   ├── core/
-│   │   ├── migrations/
-│   │   ├── models.py
-│   │   ├── views.py
-│   │   └── urls.py
-│   ├── donations/
-│   ├── news/
-│   └── engagement/
-├── static/
-│   └── assets/
-│       ├── css/
-│       ├── js/
-│       ├── vendor/
-│       └── img/
-├── templates/
-│   ├── core/
-│   │   └── home_page.html
-│   ├── base.html
-│   └── includes/
-├── media/
-├── config/
-│   ├── settings/
-│   ├── urls.py
-│   └── wsgi.py
-└── manage.py
+│   ├── core/         # Homepage, about, contact, etc.
+│   ├── news/         # News section (Wagtail-based)
+│   ├── donations/    # Donation functionality
+│   ├── engagement/   # Community engagement
+│   └── comments/     # User comments
+├── accounts/         # Custom user model & authentication
+├── static/           # Static assets (CSS, JS, images)
+├── templates/        # HTML templates (Django + Wagtail)
+├── config/           # Django settings & configuration
+├── manage.py         # Django entrypoint
+└── requirements.txt  # Python dependencies
 ```
 
-### Core Components
+## Progress Overview (April 2025)
 
-#### 1. Templates System
-- **Base Template** (`templates/base.html`):
-  ```html
-  <!DOCTYPE html>
-  <html>
-  <head>
-      {% load static %}
-      <!-- Meta tags -->
-      <!-- CSS includes -->
-  </head>
-  <body>
-      {% include 'includes/header.html' %}
-      {% block content %}{% endblock %}
-      {% include 'includes/footer.html' %}
-  </body>
-  </html>
-  ```
+### Completed Features
+- Authentication system with custom user model, registration, login, logout, email verification, and password reset
+- Modern, responsive UI for all authentication and profile pages
+- News section with:
+  - Wagtail-powered news articles
+  - Featured images and categories
+  - Modern news list and detail pages
+  - AJAX-powered "Load More" for news list
+- Form layouts (Crispy Forms + Bootstrap 5)
+- Static and media file handling
 
-- **Homepage Template** (`templates/core/home_page.html`):
-  - Extends base.html
-  - Sections:
-    - Hero
-    - About
-    - Services
-    - Team
-    - Contact
+### In Progress
+- Homepage hero and section content
+- Navigation and header/footer includes
+- Sidebar features for news (search, recent posts, categories)
+- Donation and engagement modules
 
-#### 2. Static Files Organization
-```
-static/assets/
-├── css/
-│   ├── style.css        # Main stylesheet
-│   └── custom.css       # Custom overrides
-├── js/
-│   ├── main.js          # Main JavaScript
-│   └── custom.js        # Custom scripts
-├── vendor/             # Third-party libraries
-└── img/               # Image assets
-```
+### Pending
+- Dynamic event management
+- Community features (forums, user groups)
+- Advanced search and filtering
+- Additional content pages
 
-#### 3. Django Apps Structure
-
-##### Core App (`apps/core/`)
-```python
-# models.py
-class HomePage(Page):
-    """Homepage model with all sections."""
-    # Hero Section
-    intro = RichTextField(
-        help_text='Introductory text for the hero section'
-    )
-    
-    # About Section
-    about_title = models.CharField(
-        max_length=255,
-        help_text='Title for the about section'
-    )
-    about_description = RichTextField()
-    
-    # Services Section
-    services_title = models.CharField(max_length=255)
-    services_description = RichTextField()
-    
-    # Team Section
-    team_title = models.CharField(max_length=255)
-    team_description = RichTextField()
-    
-    # Contact Section
-    contact_info = models.JSONField(
-        default=dict,
-        help_text='Contact information in JSON format'
-    )
-    
-    # Statistics
-    statistics = models.JSONField(
-        default=dict,
-        help_text='Organization statistics'
-    )
-```
+## Credits
+- **Template Base**: BizLand by BootstrapMade ([link](https://bootstrapmade.com/bizland-bootstrap-business-template/))
+- **License**: [BootstrapMade License](https://bootstrapmade.com/license/)
 
 ## Features
 
@@ -481,32 +414,3 @@ All rights reserved GCDA
 - Usage terms
 - Content rights
 - Liability limitations
-```
-
-## Current Progress
-
-### Completed Features ✅
-1. Authentication System
-   - User registration
-   - Login/Logout
-   - Email verification
-   - Password reset
-2. Frontend Styling
-   - Authentication pages
-   - Form layouts
-3. Backend Configuration
-   - Django setup
-   - Database configuration
-   - Email settings
-
-### In Progress 🚧
-1. Homepage Development
-2. Navigation System
-3. Content Management
-4. User Dashboard
-
-### Pending 📋
-1. Donation System
-2. News Section
-3. Event Management
-4. Community Features

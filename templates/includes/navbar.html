@@ -3,7 +3,7 @@
 <header id="header" class="d-flex align-items-center">
   <div class="container d-flex align-items-center justify-content-between">
 
-    <h1 class="logo"><a href="{% url 'core:home' %}">GCDA<span>.HIYAB WELAY</span></a></h1>
+    <h1 class="logo"><a href="{% url 'core:home' %}">GCDA</a></h1>
     <!-- Uncomment below if you prefer to use an image logo -->
     <!-- <a href="{% url 'core:home' %}" class="logo"><img src="{% static 'assets/img/logo.png' %}" alt=""></a>-->
 
@@ -28,7 +28,10 @@
           <li><a class="nav-link scrollto" href="{% url 'accounts:register' %}">Sign Up</a></li>
         {% endif %}
       </ul>
-      <i class="bi bi-list mobile-nav-toggle"></i>
+      <!-- Mobile nav toggle button -->
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation" style="display:none; background:none; border:none; font-size:2rem; color:#fff; position:absolute; right:10px; top:10px; z-index:1001;">
+        <i class="bi bi-list"></i>
+      </button>
     </nav><!-- .navbar -->
 
   </div>

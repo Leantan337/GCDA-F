@@ -112,10 +112,14 @@
    * Mobile nav toggle
    */
   on('click', '.mobile-nav-toggle', function(e) {
-    select('#navbar').classList.toggle('navbar-mobile')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
-  })
+    select('#navbar').classList.toggle('navbar-mobile');
+    // Toggle icon inside button
+    const icon = this.querySelector('i');
+    if (icon) {
+      icon.classList.toggle('bi-list');
+      icon.classList.toggle('bi-x');
+    }
+  });
 
   /**
    * Mobile nav dropdowns activate

@@ -1,0 +1,30 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% for news_item in news_items %}
+  <div class="row align-items-center py-4 border-bottom g-0">
+    <div class="col-md-4 mb-3 mb-md-0">
+      {% if news_item.featured_image %}
+        {% image news_item.featured_image fill-400x300 as photo %}
+        <a href="{% pageurl news_item %}">
+          <img src="{{ photo.url }}" class="img-fluid rounded-3 w-100" style="min-height:180px; object-fit:cover;" alt="{{ news_item.title }}">
+        </a>
+      {% else %}
+        <div class="d-flex align-items-center justify-content-center bg-light rounded-3" style="height:180px;">
+          <span class="text-muted fs-1"><i class="bi bi-image"></i></span>
+        </div>
+      {% endif %}
+    </div>
+    <div class="col-md-8 ps-md-4">
+      <div class="d-flex flex-wrap align-items-center mb-2 small text-uppercase text-muted gap-3">
+        <span>{{ news_item.date|date:"d M Y" }}</span>
+        {% if news_item.category %}
+          <span class="fw-bold text-danger">{{ news_item.category }}</span>
+        {% endif %}
+      </div>
+      <h3 class="fw-bold mb-2" style="font-size:1.35rem;">
+        <a href="{% pageurl news_item %}" class="text-dark text-decoration-none">{{ news_item.title }}</a>
+      </h3>
+      <p class="mb-2 text-muted">{{ news_item.intro|truncatewords:30 }}</p>
+      <a href="{% pageurl news_item %}" class="text-danger fw-bold text-decoration-none">Read More <i class="bi bi-chevron-right"></i></a>
+    </div>
+  </div>
+{% endfor %}

@@ -47,7 +47,6 @@ def get_field_display(obj, field_name):
     # Otherwise try to get the value directly
     if hasattr(obj, field_name):
         value = getattr(obj, field_name)
-        # Handle callable
         if callable(value):
             return value()
         return value

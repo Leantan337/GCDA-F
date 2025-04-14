@@ -1,30 +1,69 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <h1 class="title">News</h1>
-        <div class="row">
-            {% for news_item in news_items %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    {% if news_item.image %}
-                    <img src="{{ news_item.image.url }}" class="card-img-top" alt="{{ news_item.title }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ news_item.title }}</h5>
-                        <p class="card-text">{{ news_item.intro|truncatewords:30 }}</p>
-                        <a href="{% url 'news:news_detail' news_item.slug %}" class="btn btn-primary">Read More</a>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col">
-                <p>No news articles available.</p>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+<!-- Hero/Banner Section -->
+<section class="news-hero-section position-relative" style="background: linear-gradient(rgba(34,34,34,0.7), rgba(34,34,34,0.7)), url('/static/assets/img/hero-bg.jpg') center/cover no-repeat; min-height: 260px; display: flex; align-items: center;">
+  <div class="container text-white">
+    <h1 class="display-4 fw-bold mb-0">Latest News</h1>
+  </div>
 </section>
+
+<section class="section py-5">
+  <div class="container">
+    <div id="news-list-container">
+      {% include 'news/includes/news_items.html' with news_items=news_items %}
+    </div>
+    {% if news_items.has_next %}
+      <div class="text-center mt-5">
+        <button id="load-more-btn" class="btn btn-outline-danger px-5 py-2 rounded-pill fw-bold"
+                data-next-page="{{ news_items.next_page_number }}">
+          Load More
+        </button>
+      </div>
+    {% endif %}
+    {% if not news_items or not news_items.object_list %}
+      <div class="text-center py-5">
+        <p class="lead">No news articles available.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var loadMoreBtn = document.getElementById('load-more-btn');
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function() {
+      var nextPage = this.getAttribute('data-next-page');
+      var btn = this;
+      btn.disabled = true;
+      btn.innerHTML = 'Loading...';
+      fetch(window.location.pathname + '?page=' + nextPage, {
+        headers: {'x-requested-with': 'XMLHttpRequest'}
+      })
+      .then(response => response.text())
+      .then(html => {
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        var newItems = tempDiv.querySelectorAll('.row.align-items-center');
+        var container = document.getElementById('news-list-container');
+        newItems.forEach(function(item) {
+          container.appendChild(item);
+        });
+        // Update or remove the button
+        var hasNext = tempDiv.querySelector('#load-more-btn');
+        if (hasNext) {
+          btn.setAttribute('data-next-page', hasNext.getAttribute('data-next-page'));
+          btn.disabled = false;
+          btn.innerHTML = 'Load More';
+        } else {
+          btn.remove();
+        }
+      });
+    });
+  }
+});
+</script>
 {% endblock %}

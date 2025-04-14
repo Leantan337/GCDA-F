@@ -2,85 +2,78 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <!-- Profile Summary Card -->
-            <div class="card mb-4">
-                <div class="card-body text-center">
-                    {% if user.profile_picture %}
-                        <img src="{{ user.profile_picture.url }}" class="rounded-circle img-fluid mb-3" style="max-width: 150px;">
-                    {% else %}
-                        <img src="https://via.placeholder.com/150" class="rounded-circle img-fluid mb-3">
-                    {% endif %}
-                    <h5 class="card-title">{{ user.get_full_name|default:user.username }}</h5>
-                    <p class="text-muted">Member since {{ user.date_joined|date:"F Y" }}</p>
-                </div>
-            </div>
-
-            <!-- Quick Stats Card -->
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-title">Activity Summary</h6>
-                    <ul class="list-unstyled">
-                        <li>Comments: {{ user.comments.count }}</li>
-                        <li>Last Login: {{ user.last_login|date:"M d, Y" }}</li>
-                    </ul>
-                </div>
-            </div>
+<section class="section bg-light py-5 min-vh-100">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+          <div class="card-body text-center">
+            {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" class="rounded-circle img-fluid mb-3 shadow" style="max-width: 120px;">
+            {% else %}
+              <img src="https://via.placeholder.com/120" class="rounded-circle img-fluid mb-3 shadow">
+            {% endif %}
+            <h5 class="fw-bold">{{ user.get_full_name|default:user.username }}</h5>
+            <p class="text-muted small">Member since {{ user.date_joined|date:"F Y" }}</p>
+          </div>
         </div>
-
-        <div class="col-md-8">
-            <!-- Edit Profile Card -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Edit Profile</h4>
-                    <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-primary btn-sm">Back to Dashboard</a>
-                </div>
-                <div class="card-body">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
-                                {{ message }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
-                            <button type="reset" class="btn btn-outline-secondary">Reset</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body">
+            <h6 class="fw-bold mb-2">Activity Summary</h6>
+            <ul class="list-unstyled mb-0">
+              <li><i class="bi bi-chat-left-text me-1"></i> Comments: {{ user.comments.count }}</li>
+              <li><i class="bi bi-clock-history me-1"></i> Last Login: {{ user.last_login|date:"M d, Y" }}</li>
+            </ul>
+          </div>
         </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-header bg-white border-0 pb-0 d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-bold">Edit Profile</h4>
+            <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-primary btn-sm rounded-pill">Back to Dashboard</a>
+          </div>
+          <div class="card-body">
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+              {% csrf_token %}
+              {{ form|crispy }}
+              <div class="mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4">Update Profile</button>
+                <button type="reset" class="btn btn-outline-secondary rounded-pill px-4">Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>
 {% endblock %}
-
 {% block extra_js %}
 <script>
 // Form validation
 (function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
 })();
 </script>
 {% endblock %}

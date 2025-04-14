@@ -1,32 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-body p-5">
-                        <h2 class="text-center mb-4">Register</h2>
-                        <form method="post">
-                            {% csrf_token %}
-                            {% for field in form %}
-                                <div class="form-group mb-3">
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <small class="text-danger">{{ field.errors|join:", " }}</small>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                            <button type="submit" class="btn btn-primary w-100">Register</button>
-                        </form>
-                        <div class="text-center mt-3">
-                            <p>Already have an account? <a href="{% url 'accounts:login' %}">Login here</a></p>
-                        </div>
-                    </div>
+<section class="section bg-light py-5 min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-5">
+            <h2 class="text-center mb-4 fw-bold">Create Account</h2>
+            <form method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="mb-3">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <div class="text-danger small">{{ field.errors|join:", " }}</div>
+                  {% endif %}
                 </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-success w-100 rounded-pill py-2 fw-bold">Register</button>
+            </form>
+            <div class="text-center mt-4">
+              <p class="mb-1">Already have an account? <a href="{% url 'accounts:login' %}" class="fw-semibold">Login here</a></p>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 {% endblock %}

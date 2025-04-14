@@ -2,19 +2,35 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
-<div class="container mt-5">
-    <article>
-        <h1>{{ news_item.title }}</h1>
-        <p class="text-muted">{{ news_item.date|date:"F j, Y" }}</p>
-        
-        {% if news_item.featured_image %}
+<section class="news-detail section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <article class="card shadow p-4 mb-5 bg-white rounded news-article">
+          <header class="news-header mb-4">
+            <div class="section-title">
+              <h2>News</h2>
+              <h3>{{ news_item.title }}</h3>
+            </div>
+            <div class="meta mb-2 text-muted d-flex align-items-center" style="gap: 1rem;">
+              <span class="date"><i class="bi bi-calendar-event"></i> {{ news_item.date|date:"F j, Y" }}</span>
+              {% if news_item.author %}
+                <span class="author"><i class="bi bi-person-circle"></i> {{ news_item.author }}</span>
+              {% endif %}
+            </div>
+          </header>
+
+          {% if news_item.featured_image %}
             {% image news_item.featured_image fill-800x450 as photo %}
-            <img src="{{ photo.url }}" class="img-fluid mb-4" alt="{{ news_item.title }}">
-        {% endif %}
-        
-        <div class="news-content">
+            <img src="{{ photo.url }}" class="img-fluid rounded mb-4 w-100" alt="{{ news_item.title }}">
+          {% endif %}
+
+          <div class="news-content lead">
             {{ news_item.body|richtext }}
-        </div>
-    </article>
-</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
