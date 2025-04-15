@@ -283,4 +283,15 @@
    */
   new PureCounter();
 
+  /**
+   * Eco Green-style navbar toggle
+   */
+  const toggleButton = document.querySelector('.navbar-toggle');
+  const navbarMenu = document.querySelector('.navbar-menu');
+  if (toggleButton && navbarMenu) {
+    toggleButton.addEventListener('click', () => {
+      navbarMenu.classList.toggle('active');
+    });
+  }
+
 })()

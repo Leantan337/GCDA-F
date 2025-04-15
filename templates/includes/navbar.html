@@ -1,38 +1,31 @@
 {% load static %}
 <!-- ======= Header ======= -->
-<header id="header" class="d-flex align-items-center">
-  <div class="container d-flex align-items-center justify-content-between">
-
-    <h1 class="logo"><a href="{% url 'core:home' %}">GCDA</a></h1>
-    <!-- Uncomment below if you prefer to use an image logo -->
-    <!-- <a href="{% url 'core:home' %}" class="logo"><img src="{% static 'assets/img/logo.png' %}" alt=""></a>-->
-
-    <nav id="navbar" class="navbar">
-      <ul>
-        <li><a class="nav-link scrollto active" href="{% url 'core:home' %}#hero">Home</a></li>
-        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#about">About</a></li>
-        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#services">Our Work</a></li>
-        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#team">Team</a></li>
-        <li><a class="nav-link scrollto" href="{% url 'news:news_list' %}">News</a></li>
-        <li><a class="nav-link scrollto" href="{% url 'core:home' %}#contact">Contact</a></li>
-        {% if user.is_authenticated %}
-          <li><a class="nav-link scrollto" href="{% url 'accounts:profile' %}">Profile</a></li>
-          <li>
-            <form method="POST" action="{% url 'accounts:logout' %}" style="display:inline;">
-              {% csrf_token %}
-              <button type="submit" class="nav-link scrollto" style="background:none; border:none; cursor:pointer; padding:8px 0;">Logout</button>
-            </form>
-          </li>
-        {% else %}
-          <li><a class="nav-link scrollto" href="{% url 'accounts:login' %}">Login</a></li>
-          <li><a class="nav-link scrollto" href="{% url 'accounts:register' %}">Sign Up</a></li>
-        {% endif %}
-      </ul>
-      <!-- Mobile nav toggle button -->
-      <button class="mobile-nav-toggle" aria-label="Toggle navigation" style="display:none; background:none; border:none; font-size:2rem; color:#fff; position:absolute; right:10px; top:10px; z-index:1001;">
-        <i class="bi bi-list"></i>
-      </button>
-    </nav><!-- .navbar -->
-
+<nav class="navbar">
+  <div class="container">
+    <a href="{% url 'core:home' %}" class="navbar-brand">
+      <img src="{% static 'assets/img/logo.png' %}" alt="Logo" />
+    </a>
+    <ul class="navbar-menu">
+      <li><a href="{% url 'core:home' %}">Home</a></li>
+      <li><a href="{% url 'core:home' %}#about">About</a></li>
+      <li><a href="{% url 'core:home' %}#services">Projects</a></li>
+      <li><a href="{% url 'news:news_list' %}">News</a></li>
+      <li><a href="{% url 'core:home' %}#contact">Contact</a></li>
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+        <li>
+          <form method="POST" action="{% url 'accounts:logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" style="background:none; border:none; cursor:pointer; padding:8px 0; color:inherit; font: inherit;">Logout</button>
+          </form>
+        </li>
+      {% else %}
+        <li><a href="{% url 'accounts:login' %}">Login</a></li>
+        <li><a href="{% url 'accounts:register' %}">Sign Up</a></li>
+      {% endif %}
+    </ul>
+    <button class="navbar-toggle" aria-label="Toggle navigation">
+      <span class="hamburger"></span>
+    </button>
   </div>
-</header><!-- End Header -->
+</nav>
