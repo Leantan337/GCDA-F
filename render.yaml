@@ -20,9 +20,19 @@ services:
           property: connectionString
       - key: PYTHON_VERSION
         value: 3.12
-    # Add this post-build command to ensure proper static file handling
+    disk:
+      name: media
+      mountPath: /opt/render/project/src/media
+      sizeGB: 1
+    # Configure proper permissions for static and media files
     postBuild:
-      command: chmod -R 755 staticfiles
+      command: chmod -R 755 staticfiles && chmod -R 755 /opt/render/project/src/media
+
+# Configure disk for media storage
+disks:
+  - name: media
+    mountPath: /opt/render/project/src/media
+    sizeGB: 1
 
 # Simplify static path handling
 staticPublishPath: "./staticfiles"

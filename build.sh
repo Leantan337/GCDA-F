@@ -5,17 +5,21 @@ set -o errexit
 # Install dependencies
 pip install -r requirements.txt
 
+# Ensure media directory exists with proper permissions
+mkdir -p /opt/render/project/src/media
+chmod -R 755 /opt/render/project/src/media
+
 # Collect static files
 python manage.py collectstatic --no-input
-
-# Create media directory in staticfiles for WhiteNoise
-mkdir -p staticfiles/media
 
 # Ensure proper permissions on static files
 chmod -R 755 staticfiles
 
 # Run migrations
 python manage.py migrate
+
+# Create cache table
+python manage.py createcachetable
 
 # Create cache table
 python manage.py createcachetable

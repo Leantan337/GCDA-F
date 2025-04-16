@@ -160,14 +160,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Enable WhiteNoise for static files in production
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Media files
+# Media files configuration
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/opt/render/project/src/media' if not DEBUG else os.path.join(BASE_DIR, 'media')
 
-# Configure media and static files for production
+# Ensure media directory exists
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+
+# Static files handling with WhiteNoise
 if not DEBUG:
     # Use WhiteNoise for static files
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
