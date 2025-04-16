@@ -36,6 +36,13 @@ ALLOWED_HOSTS.extend(['.up.railway.app'])
 # CSRF settings - allow requests from the browser preview
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://127.0.0.1:7552', 'http://localhost:8000']
 
+# Add Railway domains to CSRF trusted origins
+if RAILWAY_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.extend([
+        f'https://{RAILWAY_HOSTNAME}',
+        'https://gcda-f-production.up.railway.app'
+    ])
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
