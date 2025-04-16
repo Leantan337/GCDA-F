@@ -167,13 +167,17 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Configure WhiteNoise for media files in production
+# In production, configure WhiteNoise differently for media files
 if not DEBUG:
-    # Use WhiteNoise for serving media files in production
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    # Use WhiteNoise for static files only
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    # Add media files to WhiteNoise
-    WHITENOISE_ROOT = os.path.join(BASE_DIR, 'media')
+    
+    # For media files, ensure they are in the static directory for deployment
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'media')):
+        os.makedirs(os.path.join(STATIC_ROOT, 'media'), exist_ok=True)
+        
+    # Update media URL to point to the static directory in production
+    MEDIA_URL = '/staticfiles/media/'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

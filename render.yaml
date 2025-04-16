@@ -3,7 +3,7 @@ services:
   - type: web
     name: gcda-web
     env: python
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    buildCommand: sh ./build.sh
     startCommand: gunicorn config.wsgi:application
     envVars:
       - key: DEBUG
@@ -26,20 +26,15 @@ services:
       sizeGB: 1
     # Add this post-build command to ensure proper permissions
     postBuild:
-      command: mkdir -p /opt/render/project/src/media && chmod -R 777 /opt/render/project/src/media
+      command: python copy_media.py && chmod -R 755 staticfiles
 
 disks:
   - name: media
     mountPath: /opt/render/project/src/media
     sizeGB: 1
 
-static:
-  - name: media
-    path: /media
-    source: media
-  - name: static
-    path: /static
-    source: staticfiles
+# Simplify static path handling
+staticPublishPath: "./staticfiles"
 
 databases:
   - name: gcda_db

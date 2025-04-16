@@ -19,20 +19,6 @@ urlpatterns = [
     path('', include(wagtail_urls)),
 ]
 
-# Serve media files in development
+# Add media serving in development - this is handled by WhiteNoise in production
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-from django.conf import settings
-from django.conf.urls.static import static
-
-urlpatterns = [
-    path('django-admin/', admin.site.urls),
-    path('admin/', include(wagtailadmin_urls)),
-    path('documents/', include(wagtaildocs_urls)),
-    # path('accounts/', include('accounts.urls')),  # Removed accounts
-    path('', include('apps.core.urls', namespace='core')),
-    path('news/', include('apps.news.urls')),
-    path('', include(wagtail_urls)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

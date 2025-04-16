@@ -12,11 +12,12 @@ chmod -R 777 media
 # Collect static files
 python manage.py collectstatic --no-input
 
-# Copy media files to static directory for production
-if [ ! -d "staticfiles/media" ]; then
-    mkdir -p staticfiles/media
-    cp -r media/* staticfiles/media/
-fi
+# Ensure media files are available in static directory for WhiteNoise to serve
+mkdir -p staticfiles/media
+cp -r media/* staticfiles/media/
+
+# Ensure proper permissions on all static and media files
+chmod -R 755 staticfiles
 
 # Run migrations
 python manage.py migrate
@@ -25,7 +26,7 @@ python manage.py migrate
 python manage.py createcachetable
 
 # Create Wagtail site entry if needed
-python manage.py shell -c "from wagtail.models import Site; Site.objects.get_or_create(hostname='gcda.onrender.com', port=80, is_default_site=True, root_page_id=1, site_name='GCDA Website')"
+python manage.py shell -c "from wagtail.models import Site; Site.objects.get_or_create(hostname='gcda-f.onrender.com', port=80, is_default_site=True, root_page_id=1, site_name='GCDA Website')"
 
 # Create superuser if environment variables are set
 #if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_EMAIL" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ]; then
