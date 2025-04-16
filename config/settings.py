@@ -215,6 +215,14 @@ if USE_S3:
     # Only use S3 for media files, not static files
     DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
     
+    # Specific Wagtail image and document storage settings
+    WAGTAILDOCS_DOCUMENT_MODEL = 'wagtaildocs.Document'
+    WAGTAILIMAGES_IMAGE_MODEL = 'wagtailimages.Image'
+    
+    # Ensure Wagtail images use the same storage
+    WAGTAILIMAGES_STORAGE = 'config.storage_backends.MediaStorage'
+    WAGTAILDOCS_STORAGE = 'config.storage_backends.MediaStorage'
+    
     # Media URL for S3
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
