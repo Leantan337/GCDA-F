@@ -32,6 +32,9 @@ if RENDER_EXTERNAL_HOSTNAME:
 # Add any *.onrender.com domains
 ALLOWED_HOSTS.extend(['.onrender.com'])
 
+# CSRF settings - allow requests from the browser preview
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://127.0.0.1:7552', 'http://localhost:8000']
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
