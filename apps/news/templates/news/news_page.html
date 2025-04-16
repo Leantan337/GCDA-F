@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="content">
+                    <h1 class="page-name">{{ page.title }}</h1>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'wagtail_serve' '' %}">Home</a></li>
+                        <li><a href="{{ page.get_parent.url }}">News</a></li>
+                        <li class="active">{{ page.title }}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="news-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="news-single-content">
+                    <div class="news-meta">
+                        <span class="date">{{ page.date|date:"F d, Y" }}</span>
+                        {% if page.categories.all %}
+                            <span class="categories">
+                                Categories: 
+                                {% for category in page.categories.all %}
+                                    <a href="{{ page.get_parent.url }}?category={{ category.slug }}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="post-intro mb-4">
+                        <p class="lead">{{ page.intro }}</p>
+                    </div>
+                    
+                    {% if page.featured_image %}
+                        <div class="featured-image mb-4">
+                            {% image page.featured_image width-800 class="img-fluid" %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="post-content">
+                        {{ page.body|richtext }}
+                    </div>
+                </div>
+                
+                <!-- Share Button -->
+                <div class="social-share mt-5 text-center">
+                    <h5>Share this article</h5>
+                    <ul class="list-inline social-media">
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ page.title }}" target="_blank"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ page.title }}" target="_blank"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="sidebar pt-5 pt-lg-0">
+                    <!-- Recent Posts -->
+                    <div class="widget recent-posts">
+                        <h5 class="widget-header">Recent Posts</h5>
+                        <ul class="list-unstyled">
+                            {% for post in recent_posts %}
+                                <li class="d-flex mb-3">
+                                    {% if post.featured_image %}
+                                        <div class="post-thumb mr-3">
+                                            {% image post.featured_image fill-80x80 as thumb %}
+                                            <a href="{% pageurl post %}">
+                                                <img src="{{ thumb.url }}" alt="{{ post.title }}" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    <div class="post-info">
+                                        <h6><a href="{% pageurl post %}">{{ post.title }}</a></h6>
+                                        <p class="post-date">{{ post.date|date:"F d, Y" }}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <!-- Categories -->
+                    <div class="widget category-widget">
+                        <h5 class="widget-header">Categories</h5>
+                        <ul class="category-list">
+                            {% for category in categories %}
+                                <li>
+                                    <a href="{{ page.get_parent.url }}?category={{ category.slug }}">{{ category.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
