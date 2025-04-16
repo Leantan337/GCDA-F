@@ -167,8 +167,11 @@ MEDIA_ROOT = '/opt/render/project/src/media' if not DEBUG else os.path.join(BASE
 # Ensure media directory exists
 os.makedirs(MEDIA_ROOT, exist_ok=True)
 
-# Static files handling with WhiteNoise
-if not DEBUG:
+# AWS S3 Configuration
+USE_S3 = os.environ.get('USE_S3', '') == 'True'
+
+# Static files handling with WhiteNoise (for non-S3 mode)
+if not DEBUG and not USE_S3:
     # Use WhiteNoise for static files
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     
@@ -178,9 +181,31 @@ if not DEBUG:
     
     # Ensure the media directory exists
     os.makedirs(MEDIA_ROOT, exist_ok=True)
+
+# S3 Configuration (when enabled)
+if USE_S3:
+    # S3 Storage Credentials
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'eu-north-1')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     
-    # Configure Wagtail to use the database for image renditions
-    WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
+    # Add storages to installed apps
+    INSTALLED_APPS += ['storages']
+    
+    # S3 Storage Configuration
+    STATICFILES_STORAGE = 'config.storage_backends.StaticStorage'
+    DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
+    
+    # URLs
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+# Configure Wagtail to use the database for image renditions
+WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
