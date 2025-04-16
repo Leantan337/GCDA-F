@@ -103,7 +103,7 @@ class HomePage(Page):
         InlinePanel('featured_programs', label="Featured Programs"),
     ]
 
-    class Meta:
+    class Meta(Page.Meta):
         verbose_name = "Homepage"
 
 
@@ -120,8 +120,8 @@ class ServiceOrderable(Orderable):
         FieldPanel('icon'),
     ]
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        return str(self.title)
 
 
 class TeamMemberOrderable(Orderable):
@@ -145,8 +145,8 @@ class TeamMemberOrderable(Orderable):
         FieldPanel('photo'),
     ]
 
-    def __str__(self):
-        return self.name
+    def __str__(self) -> str:
+        return str(self.name)
 
 
 class FeaturedProgramOrderable(Orderable):
@@ -170,5 +170,5 @@ class FeaturedProgramOrderable(Orderable):
         FieldPanel('link'),
     ]
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        return str(self.title)

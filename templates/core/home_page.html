@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block title %}Home - GCDA{% endblock %}
 
@@ -15,7 +16,9 @@
         </div>
       </div>
       <div class="col-lg-6 order-1 order-lg-2 hero-img">
-        <img src="{% static 'assets/img/hero-img.png' %}" class="img-fluid animated" alt="">
+        {% if page.hero_image %}
+          {% image page.hero_image fill-600x400 class="img-fluid animated" alt="GCDA Hero Image" %}
+        {% endif %}
       </div>
     </div>
   </div>

@@ -53,8 +53,8 @@ class EngagementEvent(models.Model):
             models.Index(fields=['event_type']),
         ]
 
-    def __str__(self):
-        return f"{self.event_type} by {self.user} on {self.page}"
+    def __str__(self) -> str:
+        return str(f"{self.event_type} by {self.user} on {self.page}")
 
 class NewsletterSubscription(models.Model):
     """Newsletter subscription management."""
@@ -85,8 +85,8 @@ class NewsletterSubscription(models.Model):
         verbose_name = "Newsletter Subscription"
         verbose_name_plural = "Newsletter Subscriptions"
 
-    def __str__(self):
-        return f"Newsletter subscription for {self.email}"
+    def __str__(self) -> str:
+        return str(f"Newsletter subscription for {self.email}")
 
     def unsubscribe(self):
         """Deactivate the subscription."""

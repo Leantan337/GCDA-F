@@ -23,7 +23,7 @@ class DonationPage(Page):
         FieldPanel('thank_you_text'),
     ]
 
-    class Meta:
+    class Meta(Page.Meta):
         verbose_name = "Donation Page"
         verbose_name_plural = "Donation Pages"
 
@@ -51,14 +51,14 @@ class DonationCampaign(models.Model):
         verbose_name = "Campaign"
         verbose_name_plural = "Campaigns"
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        return str(self.title)
 
     def get_progress_percentage(self):
         """Calculate campaign progress as percentage."""
         if self.goal_amount <= 0:
             return 0
-        return (self.current_amount / self.goal_amount) * 100
+        return float(self.current_amount) / float(self.goal_amount) * 100
 
 class Donation(models.Model):
     """Individual donation record."""
@@ -108,8 +108,8 @@ class Donation(models.Model):
         verbose_name = "Donation"
         verbose_name_plural = "Donations"
 
-    def __str__(self):
-        return f"Donation of {self.amount} by {self.donor or 'Anonymous'}"
+    def __str__(self) -> str:
+        return str(f"Donation of {self.amount} by {self.donor or 'Anonymous'}")
 
     def save(self, *args, **kwargs):
         """Update campaign amount on successful donation."""

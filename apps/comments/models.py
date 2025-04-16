@@ -58,8 +58,8 @@ class Comment(models.Model):
             models.Index(fields=['is_approved']),
         ]
 
-    def __str__(self):
-        return f"Comment by {self.author} on {self.page}"
+    def __str__(self) -> str:
+        return str(f"Comment by {self.author} on {self.page}")
 
     def approve(self, user=None):
         """Approve the comment with tracking information."""
