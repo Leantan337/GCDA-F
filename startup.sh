@@ -29,6 +29,10 @@ python manage.py createcachetable
 echo "Configuring Wagtail site..."
 python manage.py shell -c "from wagtail.models import Site; from os import environ; hostname = environ.get('RAILWAY_PUBLIC_DOMAIN', 'gcda.up.railway.app'); Site.objects.get_or_create(hostname=hostname, port=80, is_default_site=True, root_page_id=1, site_name='GCDA Website')"
 
+# Run additional Wagtail storage diagnostics after migrations
+echo "Running Wagtail storage diagnostics..."
+python debug_wagtail_storage.py
+
 # Create a superuser if environment variables are set
 if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_EMAIL" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ]; then
     echo "Creating superuser..."
