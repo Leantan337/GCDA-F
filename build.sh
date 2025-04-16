@@ -12,6 +12,12 @@ chmod -R 777 media
 # Collect static files
 python manage.py collectstatic --no-input
 
+# Copy media files to static directory for production
+if [ ! -d "staticfiles/media" ]; then
+    mkdir -p staticfiles/media
+    cp -r media/* staticfiles/media/
+fi
+
 # Run migrations
 python manage.py migrate
 

@@ -17,7 +17,11 @@ urlpatterns = [
     path('', include('apps.core.urls', namespace='core')),
     path('news/', include('apps.news.urls')),
     path('', include(wagtail_urls)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 from django.conf import settings

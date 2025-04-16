@@ -28,6 +28,11 @@ services:
     postBuild:
       command: mkdir -p /opt/render/project/src/media && chmod -R 777 /opt/render/project/src/media
 
+disks:
+  - name: media
+    mountPath: /opt/render/project/src/media
+    sizeGB: 1
+
 static:
   - name: media
     path: /media
