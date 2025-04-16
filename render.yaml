@@ -20,6 +20,10 @@ services:
           property: connectionString
       - key: PYTHON_VERSION
         value: 3.12
+    disk:
+      name: media
+      mountPath: /opt/render/project/src/media
+      sizeGB: 1
 
 databases:
   - name: gcda_db
