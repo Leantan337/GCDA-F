@@ -121,15 +121,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Use PostgreSQL on Railway, SQLite locally
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
-    # Parse database URL for PostgreSQL on Railway
+    # Use dj_database_url for Railway PostgreSQL
     import dj_database_url
+    # Print the DATABASE_URL for debugging (will be hidden in logs)
+    print(f"Connecting to database with URL: {DATABASE_URL}")
+    
+    # Parse DATABASE_URL to get configuration
+    db_config = dj_database_url.parse(DATABASE_URL)
+    
+    # Explicitly set database configuration
     DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+        'default': db_config
     }
+    
+    # Print database config for debugging (password will be hidden in logs)
+    print(f"Database config: Engine={db_config.get('ENGINE')}, Name={db_config.get('NAME')}, Host={db_config.get('HOST')}, Port={db_config.get('PORT')}")
 else:
     # Use SQLite for local development
     DATABASES = {
