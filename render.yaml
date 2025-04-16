@@ -28,6 +28,11 @@ services:
     postBuild:
       command: mkdir -p /opt/render/project/src/media && chmod -R 777 /opt/render/project/src/media
 
+static:
+  - name: media
+    path: /media
+    source: media
+
 databases:
   - name: gcda_db
     databaseName: gcda
