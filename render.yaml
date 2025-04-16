@@ -24,6 +24,9 @@ services:
       name: media
       mountPath: /opt/render/project/src/media
       sizeGB: 1
+    # Add this post-build command to ensure proper permissions
+    postBuild:
+      command: mkdir -p /opt/render/project/src/media && chmod -R 777 /opt/render/project/src/media
 
 databases:
   - name: gcda_db
