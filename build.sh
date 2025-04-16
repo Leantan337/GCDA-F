@@ -5,18 +5,13 @@ set -o errexit
 # Install dependencies
 pip install -r requirements.txt
 
-# Create media directory with proper permissions
-mkdir -p media/images
-chmod -R 777 media
-
 # Collect static files
 python manage.py collectstatic --no-input
 
-# Ensure media files are available in static directory for WhiteNoise to serve
+# Create media directory in staticfiles for WhiteNoise
 mkdir -p staticfiles/media
-cp -r media/* staticfiles/media/
 
-# Ensure proper permissions on all static and media files
+# Ensure proper permissions on static files
 chmod -R 755 staticfiles
 
 # Run migrations

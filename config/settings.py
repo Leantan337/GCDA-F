@@ -167,23 +167,27 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# In production, configure WhiteNoise differently for media files
+# Configure media and static files for production
 if not DEBUG:
-    # Use WhiteNoise for static files only
+    # Use WhiteNoise for static files
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     
-    # For media files, ensure they are in the static directory for deployment
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'media')):
-        os.makedirs(os.path.join(STATIC_ROOT, 'media'), exist_ok=True)
-        
-    # Update media URL to point to the static directory in production
+    # Configure media files to be stored in a subdirectory of static files
+    MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
     MEDIA_URL = '/staticfiles/media/'
+    
+    # Ensure the media directory exists
+    os.makedirs(MEDIA_ROOT, exist_ok=True)
+    
+    # Configure Wagtail to use the database for image renditions
+    WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Wagtail settings
 WAGTAIL_SITE_NAME = "GCDA"
+WAGTAIL_IMAGES_MODEL = 'core.CustomImage'
 
 # Search
 WAGTAILSEARCH_BACKENDS = {
