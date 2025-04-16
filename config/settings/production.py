@@ -3,6 +3,7 @@ Production settings for NGO Website.
 """
 import os
 import dj_database_url
+from pathlib import Path
 from .base import *  # noqa
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -65,8 +66,15 @@ CACHES = {
     }
 }
 
-# Static files
+# Static files (CSS, JavaScript, Images)
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media files (user uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Sentry
 import sentry_sdk
