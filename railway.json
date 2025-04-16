@@ -5,7 +5,7 @@
     "buildCommand": "bash ./build.sh"
   },
   "deploy": {
-    "startCommand": "gunicorn config.wsgi:application",
+    "startCommand": "bash ./startup.sh",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
