@@ -32,6 +32,9 @@ static:
   - name: media
     path: /media
     source: media
+  - name: static
+    path: /static
+    source: staticfiles
 
 databases:
   - name: gcda_db
