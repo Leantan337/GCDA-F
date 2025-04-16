@@ -33,7 +33,6 @@ if RENDER_EXTERNAL_HOSTNAME:
 ALLOWED_HOSTS.extend(['.onrender.com'])
 
 # Application definition
-# Add this to your INSTALLED_APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,20 +54,16 @@ INSTALLED_APPS = [
     'wagtail.sites',
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
-    'wagtail_modeladmin',  # External package for ModelAdmin support
-    'taggit',  # Add this line for tagging support
+    'wagtail_modeladmin',  
+    'taggit',  
 
     # Third-party apps
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'crispy_forms',
-    'crispy_bootstrap4',  # Add this line
+    'crispy_bootstrap4',  
 
     # Local apps
-    'accounts.apps.AccountsConfig',
     'apps.core.apps.CoreConfig',
-    'apps.news.apps.NewsConfig',  # Make sure this matches your app configuration
+    'apps.news.apps.NewsConfig',  
     'apps.donations.apps.DonationsConfig',
     'apps.engagement.apps.EngagementConfig',
     'apps.comments.apps.CommentsConfig',
@@ -77,18 +72,9 @@ INSTALLED_APPS = [
 # Add this setting (usually ID 1 is the default site)
 SITE_ID = 1
 
-# django-allauth configuration
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
-
-# allauth settings
-ACCOUNT_LOGOUT_REDIRECT_URL = '/'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -96,7 +82,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  # Added for django-allauth
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -202,27 +187,6 @@ elif RENDER_EXTERNAL_HOSTNAME:
     WAGTAILADMIN_BASE_URL = f'https://{RENDER_EXTERNAL_HOSTNAME}'
 else:
     WAGTAILADMIN_BASE_URL = 'https://gcda.onrender.com'
-
-# Django allauth settings
-
-# Add this setting for CustomUser model
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
-# Authentication settings
-LOGIN_URL = 'accounts:login'
-LOGOUT_REDIRECT_URL = '/'
-
-# django-allauth settings
-ACCOUNT_LOGIN_METHODS = {'username', 'email'}
-
-# Remove these deprecated settings
-# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
-
-# Use this new format instead
-ACCOUNT_RATE_LIMITS = {
-    'login_failed': {'rate': '5/5m', 'timeout': '300s'}
-}
 
 # Email settings (use console in development, configure for production)
 if DEBUG:

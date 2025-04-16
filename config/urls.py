@@ -13,7 +13,7 @@ urlpatterns = [
     path('django-admin/', admin.site.urls),
     path('admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
-    path('accounts/', include('accounts.urls')),
+    # path('accounts/', include('accounts.urls')),  # Removed accounts
     path('', include('apps.core.urls', namespace='core')),
     path('news/', include('apps.news.urls')),
     path('', include(wagtail_urls)),
@@ -27,7 +27,7 @@ urlpatterns = [
     path('django-admin/', admin.site.urls),
     path('admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
-    path('accounts/', include('accounts.urls')),
+    # path('accounts/', include('accounts.urls')),  # Removed accounts
     path('', include('apps.core.urls', namespace='core')),
     path('news/', include('apps.news.urls')),
     path('', include(wagtail_urls)),

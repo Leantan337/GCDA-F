@@ -11,18 +11,6 @@
       <li><a href="{% url 'core:home' %}#services">Projects</a></li>
       <li><a href="{% url 'news:news_list' %}">News</a></li>
       <li><a href="{% url 'core:home' %}#contact">Contact</a></li>
-      {% if user.is_authenticated %}
-        <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
-        <li>
-          <form method="POST" action="{% url 'accounts:logout' %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" style="background:none; border:none; cursor:pointer; padding:8px 0; color:inherit; font: inherit;">Logout</button>
-          </form>
-        </li>
-      {% else %}
-        <li><a href="{% url 'accounts:login' %}">Login</a></li>
-        <li><a href="{% url 'accounts:register' %}">Sign Up</a></li>
-      {% endif %}
     </ul>
     <button class="navbar-toggle" aria-label="Toggle navigation">
       <span class="hamburger"></span>

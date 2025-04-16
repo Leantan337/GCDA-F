@@ -1,7 +1,7 @@
 Django==5.1.6
 wagtail>=5.2.0
 wagtail-modeladmin>=1.0.0
-django-allauth>=0.57.0
+# django-allauth>=0.57.0  # Removed unused auth package
 django-crispy-forms>=2.1
 django-modeltranslation>=0.18.11
 Pillow>=10.0.0
