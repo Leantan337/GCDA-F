@@ -196,13 +196,13 @@ if USE_S3:
     # Add storages to installed apps
     INSTALLED_APPS += ['storages']
     
-    # S3 Storage Configuration
-    STATICFILES_STORAGE = 'config.storage_backends.StaticStorage'
+    # Only use S3 for media storage, keeping static files local
     DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
     
-    # URLs
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    # Media URL for S3
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    
+    # Keep STATIC_URL unchanged - will be handled by WhiteNoise in production
 
 # Configure Wagtail to use the database for image renditions
 WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False

@@ -12,14 +12,12 @@ chmod -R 755 /opt/render/project/src/media
 # Collect static files
 python manage.py collectstatic --no-input
 
-# Collect static files for AWS S3 if enabled
-if [ "\$USE_S3" = 'True' ]; then
-    echo "Collecting static files for S3..."
-    python manage.py collectstatic --noinput
-else
-    # Ensure proper permissions on static files
-    chmod -R 755 staticfiles
-fi
+# We always collect static files locally, regardless of S3 configuration
+# This ensures static files are properly processed by WhiteNoise
+python manage.py collectstatic --noinput
+
+# Ensure proper permissions on static files
+chmod -R 755 staticfiles
 
 # Run migrations
 python manage.py migrate
