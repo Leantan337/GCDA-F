@@ -8,9 +8,32 @@ echo "Starting deployment initialization..."
 echo "Waiting for database to be ready..."
 sleep 5
 
-# Run migrations
-echo "Running migrations..."
-python manage.py migrate
+# Check if we should fake migrations
+echo "Checking database state..."
+python -c "
+import sys
+import django
+from django.db import connection
+django.setup()
+cursor = connection.cursor()
+try:
+    cursor.execute(\"SELECT * FROM news_newsindexpage LIMIT 1\")
+    print('Table exists, will use --fake-initial flag for migrations')
+    sys.exit(0)
+except Exception as e:
+    print('Table check failed, will run normal migrations')
+    sys.exit(1)
+"
+
+if [ $? -eq 0 ]; then
+    # Tables exist, use fake-initial
+    echo "Running migrations with --fake-initial flag..."
+    python manage.py migrate --fake-initial
+else
+    # Normal migrations
+    echo "Running migrations..."
+    python manage.py migrate
+fi
 
 # Create cache table
 echo "Creating cache table..."
