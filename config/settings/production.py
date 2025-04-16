@@ -67,14 +67,10 @@ CACHES = {
 }
 
 # Static files (CSS, JavaScript, Images)
-BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# BASE_DIR, STATIC_URL, STATIC_ROOT, and STATICFILES_STORAGE are already defined in base.py. Remove unless you need to override.
 
 # Media files (user uploads)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_URL and MEDIA_ROOT are already defined in base.py. Remove unless you need to override.
 
 # Sentry
 import sentry_sdk
@@ -86,3 +82,31 @@ sentry_sdk.init(
     traces_sample_rate=1.0,
     send_default_pii=True
 )
+
+
+# Add at the end of the file
+
+# Logging configuration for debugging media/static files
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+        },
+        'wagtail': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+        },
+        'wagtail.images': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
