@@ -6,8 +6,8 @@ set -o errexit
 pip install -r requirements.txt
 
 # Ensure media directory exists with proper permissions
-mkdir -p /opt/render/project/src/media
-chmod -R 755 /opt/render/project/src/media
+mkdir -p /opt/data/media
+chmod -R 755 /opt/data/media
 
 # Collect static files
 python manage.py collectstatic --no-input
@@ -16,7 +16,7 @@ python manage.py collectstatic --no-input
 chmod -R 755 staticfiles
 
 # Ensure proper S3 configuration if enabled
-if [ "\$USE_S3" = 'True' ]; then
+if [ "$USE_S3" = 'True' ]; then
     echo "S3 storage enabled for media files"
 fi
 
@@ -26,11 +26,8 @@ python manage.py migrate
 # Create cache table
 python manage.py createcachetable
 
-# Create cache table
-python manage.py createcachetable
-
 # Create Wagtail site entry if needed
-python manage.py shell -c "from wagtail.models import Site; Site.objects.get_or_create(hostname='gcda-f.onrender.com', port=80, is_default_site=True, root_page_id=1, site_name='GCDA Website')"
+python manage.py shell -c "from wagtail.models import Site; from os import environ; hostname = environ.get('RAILWAY_PUBLIC_DOMAIN', 'gcda.up.railway.app'); Site.objects.get_or_create(hostname=hostname, port=80, is_default_site=True, root_page_id=1, site_name='GCDA Website')"
 
 # Create superuser if environment variables are set
 #if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_EMAIL" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ]; then

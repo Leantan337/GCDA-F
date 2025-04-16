@@ -23,14 +23,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-# Add Render domains to allowed hosts
+# Add Railway domains to allowed hosts
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# Check for Railway external hostname
+RAILWAY_HOSTNAME = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
+if RAILWAY_HOSTNAME:
+    ALLOWED_HOSTS.append(RAILWAY_HOSTNAME)
 
-# Add any *.onrender.com domains
-ALLOWED_HOSTS.extend(['.onrender.com'])
+# Add any Railway domains
+ALLOWED_HOSTS.extend(['.up.railway.app'])
 
 # CSRF settings - allow requests from the browser preview
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://127.0.0.1:7552', 'http://localhost:8000']
@@ -110,10 +111,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-# Use PostgreSQL on Render, SQLite locally
+# Use PostgreSQL on Railway, SQLite locally
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
-    # Parse database URL for PostgreSQL on Render
+    # Parse database URL for PostgreSQL on Railway
     db_url = urlparse(DATABASE_URL)
     DATABASES = {
         'default': {
@@ -165,7 +166,7 @@ STATICFILES_DIRS = [
 
 # Media files configuration
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/opt/render/project/src/media' if not DEBUG else os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/opt/data/media' if not DEBUG else os.path.join(BASE_DIR, 'media')
 
 # Ensure media directory exists
 os.makedirs(MEDIA_ROOT, exist_ok=True)
@@ -227,10 +228,10 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend
 if DEBUG:
     WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
-elif RENDER_EXTERNAL_HOSTNAME:
-    WAGTAILADMIN_BASE_URL = f'https://{RENDER_EXTERNAL_HOSTNAME}'
+elif RAILWAY_HOSTNAME:
+    WAGTAILADMIN_BASE_URL = f'https://{RAILWAY_HOSTNAME}'
 else:
-    WAGTAILADMIN_BASE_URL = 'https://gcda.onrender.com'
+    WAGTAILADMIN_BASE_URL = 'https://gcda.up.railway.app'
 
 # Email settings (use console in development, configure for production)
 if DEBUG:
