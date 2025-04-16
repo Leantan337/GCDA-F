@@ -187,7 +187,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Wagtail settings
 WAGTAIL_SITE_NAME = "GCDA"
-WAGTAIL_IMAGES_MODEL = 'core.CustomImage'
+# Using default Wagtail image model
 
 # Search
 WAGTAILSEARCH_BACKENDS = {
