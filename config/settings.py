@@ -170,19 +170,21 @@ os.makedirs(MEDIA_ROOT, exist_ok=True)
 # AWS S3 Configuration
 USE_S3 = os.environ.get('USE_S3', '') == 'True'
 
-# Static files handling with WhiteNoise (for non-S3 mode)
-if not DEBUG and not USE_S3:
+# Always use WhiteNoise for static files (regardless of S3 setting)
+if not DEBUG:
     # Use WhiteNoise for static files
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    
-    # Configure media files to be stored in a subdirectory of static files
+
+# Configure media storage based on environment
+if not DEBUG and not USE_S3:
+    # Store media in staticfiles directory when not using S3
     MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
     MEDIA_URL = '/staticfiles/media/'
     
-    # Ensure the media directory exists
+    # Ensure media directory exists
     os.makedirs(MEDIA_ROOT, exist_ok=True)
 
-# S3 Configuration (when enabled)
+# S3 Configuration for media files only (when enabled)
 if USE_S3:
     # S3 Storage Credentials
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
@@ -196,13 +198,11 @@ if USE_S3:
     # Add storages to installed apps
     INSTALLED_APPS += ['storages']
     
-    # Only use S3 for media storage, keeping static files local
+    # Only use S3 for media files, not static files
     DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
     
     # Media URL for S3
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-    
-    # Keep STATIC_URL unchanged - will be handled by WhiteNoise in production
 
 # Configure Wagtail to use the database for image renditions
 WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False

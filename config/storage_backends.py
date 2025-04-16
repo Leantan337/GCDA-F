@@ -2,12 +2,11 @@ from django.conf import settings
 from storages.backends.s3boto3 import S3Boto3Storage
 
 
-class StaticStorage(S3Boto3Storage):
-    location = 'static'
-    default_acl = 'public-read'
-
-
 class MediaStorage(S3Boto3Storage):
+    """
+    Storage for user-uploaded media files.
+    These will be stored in the 'media' folder in the S3 bucket.
+    """
     location = 'media'
     default_acl = 'public-read'
     file_overwrite = False
