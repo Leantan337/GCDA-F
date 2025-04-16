@@ -8,6 +8,11 @@ echo "Starting deployment initialization..."
 echo "Waiting for database to be ready..."
 sleep 5
 
+# Run S3 diagnostics
+echo "Running S3 diagnostics..."
+python debug_s3.py
+python test_s3_upload.py
+
 # Run the custom migration fixer to mark problematic migration as applied
 echo "Running migration fixer..."
 python fix_migrations.py
