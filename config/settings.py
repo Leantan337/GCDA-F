@@ -257,10 +257,21 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
-    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
-    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+    EMAIL_USE_TLS = True
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@gcda.org')
+
+# Force Wagtail to use S3 storage when enabled
+if USE_S3:
+    # Apply direct storage overrides after all settings are loaded
+    # This must be at the end of the settings file
+    try:
+        from apps.wagtail_override import override_wagtail_storages
+        override_wagtail_storages()
+    except Exception as e:
+        print(f"Error applying Wagtail storage override: {e}")
 
 # Add these settings for crispy-forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
