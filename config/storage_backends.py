@@ -8,5 +8,5 @@ class MediaStorage(S3Boto3Storage):
     These will be stored in the 'media' folder in the S3 bucket.
     """
     location = 'media'
-    default_acl = 'public-read'
+    # Remove default_acl as it's not supported with the current bucket settings
     file_overwrite = False

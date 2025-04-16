@@ -52,7 +52,7 @@ def test_direct_s3_upload():
             test_content, 
             bucket_name, 
             test_key,
-            ExtraArgs={'ACL': 'public-read', 'ContentType': 'text/plain'}
+            ExtraArgs={'ContentType': 'text/plain'}
         )
         
         # Verify the upload was successful by generating a URL and checking existence
