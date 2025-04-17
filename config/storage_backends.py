@@ -5,8 +5,8 @@ from storages.backends.s3boto3 import S3Boto3Storage
 class MediaStorage(S3Boto3Storage):
     """
     Storage for user-uploaded media files.
-    These will be stored in the 'media' folder in the S3 bucket.
+    These will be properly stored in the S3 bucket.
     """
-    location = 'media'
+    location = ''  # Changed from 'media' to prevent path duplication
     # Remove default_acl as it's not supported with the current bucket settings
     file_overwrite = False

@@ -223,7 +223,7 @@ if USE_S3:
     WAGTAILIMAGES_STORAGE = 'config.storage_backends.MediaStorage'
     WAGTAILDOCS_STORAGE = 'config.storage_backends.MediaStorage'
     
-    # Media URL for S3
+    # Media URL for S3 - using 'media/' as the URL prefix but empty location in storage class
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 # Configure Wagtail to use the database for image renditions
@@ -265,13 +265,9 @@ else:
 
 # Force Wagtail to use S3 storage when enabled
 if USE_S3:
-    # Apply direct storage overrides after all settings are loaded
-    # This must be at the end of the settings file
-    try:
-        from apps.wagtail_override import override_wagtail_storages
-        override_wagtail_storages()
-    except Exception as e:
-        print(f"Error applying Wagtail storage override: {e}")
+    # We'll move the override to apps.py instead of trying here
+    # The function will be called when apps are ready
+    pass
 
 # Add these settings for crispy-forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
