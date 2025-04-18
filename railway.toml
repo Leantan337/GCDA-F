@@ -5,8 +5,13 @@ buildCommand = "chmod +x build.sh && ./build.sh"
 [deploy]
 startCommand = "./start.sh"
 healthcheckPath = "/admin/login/"
-healthcheckTimeout = 100
+healthcheckTimeout = 300  # Increased timeout to 5 minutes
 restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[ports]]
+port = 8000
+protocol = "tcp"
 
 [volumes]
 media = "/media"
