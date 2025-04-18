@@ -29,8 +29,18 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.modeladmin',
+    'wagtail.contrib.settings',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -39,18 +49,10 @@ INSTALLED_APPS = [
     'wagtail.images',
     'wagtail.search',
     'wagtail.admin',
-    'wagtail.core',
-    'wagtail.contrib.modeladmin',
-    'wagtail.contrib.settings',
+    'wagtail',  # This replaces wagtail.core
+    
     'modelcluster',
     'taggit',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
     'compressor',
     'crispy_forms',
     'crispy_bootstrap4',

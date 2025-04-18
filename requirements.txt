@@ -1,5 +1,5 @@
-Django>=4.2.0
-wagtail>=5.2.0
+Django>=4.2.0,<5.0
+wagtail>=5.2.0,<6.0
 wagtail-modeladmin>=1.0.0
 # django-allauth>=0.57.0  # Removed unused auth package
 stripe>=7.0.0
