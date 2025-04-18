@@ -1,15 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = """
-# Create necessary directories in the persistent volume
-mkdir -p /media/staticfiles
-mkdir -p /media/uploads
-chmod -R 755 /media
-
-# Run Django commands
-python manage.py collectstatic --noinput
-python manage.py migrate
-"""
+buildCommand = "chmod +x build.sh && ./build.sh"
 
 [deploy]
 startCommand = "gunicorn config.wsgi:application"

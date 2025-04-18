@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',  
     'whitenoise',  # Added whitenoise for static file storage
+    'compressor',  # Added django-compressor
 
     # Local apps
     'apps.core.apps.CoreConfig',
@@ -106,33 +107,49 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     # Parse database URL for PostgreSQL on Railway
-    db_url = urlparse(DATABASE_URL)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django_db_pool.db.backends.postgresql',  # Using connection pooling
-            'NAME': db_url.path[1:],
-            'USER': db_url.username,
-            'PASSWORD': db_url.password,
-            'HOST': db_url.hostname,
-            'PORT': db_url.port,
-            # Connection pooling settings
-            'POOL_OPTIONS': {
-                'POOL_SIZE': 20,
-                'MAX_OVERFLOW': 10,
-                'RECYCLE': 300,  # Connection timeouts after 5 minutes
-            },
-            # Resilient PostgreSQL settings
-            'OPTIONS': {
-                'connect_timeout': 10,
-                'sslmode': 'require',
-            },
-            'CONN_MAX_AGE': 0,  # Disable Django's connection persistence for pooling
+    try:
+        db_url = urlparse(DATABASE_URL)
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django_db_pool.db.backends.postgresql',
+                'NAME': db_url.path[1:],  # Remove leading slash
+                'USER': db_url.username,
+                'PASSWORD': db_url.password,
+                'HOST': db_url.hostname,
+                'PORT': db_url.port or '5432',  # Default to 5432 if not specified
+                # Connection pooling settings
+                'POOL_OPTIONS': {
+                    'POOL_SIZE': int(os.environ.get('DB_POOL_SIZE', '20')),
+                    'MAX_OVERFLOW': int(os.environ.get('DB_MAX_OVERFLOW', '10')),
+                    'RECYCLE': 300,
+                },
+                # Resilient PostgreSQL settings
+                'OPTIONS': {
+                    'connect_timeout': 10,
+                    'sslmode': 'require',
+                    'keepalives': 1,
+                    'keepalives_idle': 30,
+                    'keepalives_interval': 10,
+                    'keepalives_count': 5,
+                },
+                'CONN_MAX_AGE': 0,  # Disable Django's connection persistence for pooling
+                'ATOMIC_REQUESTS': False,  # Disable automatic transactions for better performance
+            }
         }
-    }
-    
-    # Add connection pooling backend
-    INSTALLED_APPS.append('django_db_pool')
-    
+        
+        # Add connection pooling backend
+        if 'django_db_pool' not in INSTALLED_APPS:
+            INSTALLED_APPS.append('django_db_pool')
+            
+    except Exception as e:
+        print(f"Warning: Error parsing DATABASE_URL: {e}")
+        # Fallback to SQLite in case of parsing error
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
     # Use SQLite for local development
     DATABASES = {
@@ -164,7 +181,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static and Media files configuration
+# Static files configuration
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
@@ -178,14 +195,31 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Additional static files locations
+# Additional static files configuration
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
+]
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 ]
 
 # WhiteNoise configuration
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Django Compressor settings
+COMPRESS_ENABLED = not DEBUG
+COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
+COMPRESS_URL = STATIC_URL
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_OUTPUT_DIR = 'compressed'
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.rCSSMinFilter',
+]
+COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
