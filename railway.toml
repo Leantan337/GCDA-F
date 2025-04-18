@@ -3,7 +3,7 @@ builder = "nixpacks"
 buildCommand = "chmod +x build.sh && ./build.sh"
 
 [deploy]
-startCommand = "./start.sh"
+startCommand = "chmod +x start.sh && ./start.sh"
 healthcheckPath = "/admin/login/"
 healthcheckTimeout = 300  # Increased timeout to 5 minutes
 restartPolicyType = "on_failure"

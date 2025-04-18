@@ -29,6 +29,21 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'wagtail.contrib.modeladmin',
+    'wagtail.contrib.settings',
+    'modelcluster',
+    'taggit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,29 +51,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-    # Wagtail apps
-    'wagtail',
-    'wagtail.admin',
-    'wagtail.documents',
-    'wagtail.snippets',
-    'wagtail.users',
-    'wagtail.images',
-    'wagtail.embeds',
-    'wagtail.search',
-    'wagtail.sites',
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail_modeladmin',  
-    'taggit',  
-
-    # Third-party apps
+    'compressor',
     'crispy_forms',
-    'crispy_bootstrap4',  
+    'crispy_bootstrap4',
     'whitenoise',  # Added whitenoise for static file storage
-    'compressor',  # Added django-compressor
-
-    # Local apps
     'apps.core.apps.CoreConfig',
     'apps.news.apps.NewsConfig',  
     'apps.donations.apps.DonationsConfig',
