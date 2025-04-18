@@ -3,9 +3,10 @@ set -e
 
 echo "🚀 Starting application initialization..."
 
-# Function to check PostgreSQL connection
-check_postgres() {
-    python << END
+# Only check PostgreSQL if DATABASE_URL is set
+if [ -n "$DATABASE_URL" ]; then
+  check_postgres() {
+      python << END
 import sys
 import psycopg2
 from urllib.parse import urlparse
@@ -37,23 +38,22 @@ except Exception as e:
     print(f"PostgreSQL is unavailable - {str(e)}")
     sys.exit(1)
 END
-}
+  }
 
-# Wait for PostgreSQL
-echo "⏳ Waiting for PostgreSQL to be ready..."
-count=0
-until check_postgres || [ $count -eq 30 ]; do
-    echo "PostgreSQL is unavailable - sleeping 2s"
-    sleep 2
-    count=$((count + 1))
-done
+  echo "⏳ Waiting for PostgreSQL to be ready..."
+  count=0
+  until check_postgres || [ $count -eq 30 ]; do
+      echo "PostgreSQL is unavailable - sleeping 2s"
+      sleep 2
+      count=$((count + 1))
+  done
 
-if [ $count -eq 30 ]; then
-    echo "❌ Failed to connect to PostgreSQL after 60 seconds"
-    exit 1
+  if [ $count -eq 30 ]; then
+      echo "❌ Failed to connect to PostgreSQL after 60 seconds"
+      exit 1
+  fi
+  echo "✅ PostgreSQL is ready"
 fi
-
-echo "✅ PostgreSQL is ready"
 
 # Run migrations
 echo "🔧 Running database migrations..."

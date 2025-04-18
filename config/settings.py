@@ -109,34 +109,32 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PGDATABASE'),
-        'USER': os.environ.get('PGUSER'),
-        'PASSWORD': os.environ.get('PGPASSWORD'),
-        'HOST': os.environ.get('PGHOST'),
-        'PORT': os.environ.get('PGPORT', '5432'),
-        'OPTIONS': {
-            'sslmode': 'require' if os.environ.get('RAILWAY_ENVIRONMENT') == 'production' else 'prefer',
-            'connect_timeout': 60,
-        }
-    }
-}
-
-# Use DATABASE_URL if provided (Railway's format)
+# Database configuration: Use PostgreSQL if DATABASE_URL is present, otherwise fallback to SQLite3 for demo
 if os.environ.get('DATABASE_URL') and dj_database_url is not None:
     try:
-        DATABASES['default'] = dj_database_url.config(
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=os.environ.get('RAILWAY_ENVIRONMENT') == 'production'
-        )
+        DATABASES = {
+            'default': dj_database_url.config(
+                conn_max_age=600,
+                conn_health_checks=True,
+                ssl_require=os.environ.get('RAILWAY_ENVIRONMENT') == 'production'
+            )
+        }
     except Exception as e:
         print(f"Warning: Could not configure database using DATABASE_URL: {e}")
-        # Keep using the default DATABASES configuration
+        # Fallback to SQLite3
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': '/media/db.sqlite3',
+            }
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/media/db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
