@@ -17,16 +17,16 @@ pip install -r requirements.txt
 echo "📁 Creating static directory..."
 mkdir -p static/assets/img
 
-# Copy default image if testimonials-bg.jpg is missing
+# Create a simple placeholder image if needed
 echo "🖼️ Setting up default images..."
 if [ ! -f static/assets/img/testimonials-bg.jpg ]; then
-    echo "⚠️ testimonials-bg.jpg not found, using placeholder..."
-    cp static/assets/img/default-bg.jpg static/assets/img/testimonials-bg.jpg || true
+    echo "⚠️ Creating empty placeholder image..."
+    convert -size 1920x1080 xc:gray static/assets/img/testimonials-bg.jpg || true
 fi
 
-# Collect static files with ignore errors
+# Collect static files
 echo "📚 Collecting static files..."
-python manage.py collectstatic --noinput --ignore-patterns="*.scss" --clear
+python manage.py collectstatic --noinput --clear
 
 # Make start script executable
 chmod +x start.sh

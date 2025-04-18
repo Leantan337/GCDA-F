@@ -49,11 +49,10 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail',
-    'wagtail_modeladmin',  # Using standalone package
+    'wagtail_modeladmin',
     
     'modelcluster',
     'taggit',
-    'compressor',
     'crispy_forms',
     'crispy_bootstrap4',
     'whitenoise',  # Added whitenoise for static file storage
@@ -180,8 +179,8 @@ STATICFILES_DIRS = [
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False  # Don't fail on missing files
-WHITENOISE_USE_FINDERS = True  # Look for files in STATICFILES_DIRS during collectstatic
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_USE_FINDERS = True
 
 # Media files
 MEDIA_URL = '/media/'
