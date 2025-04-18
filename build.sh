@@ -13,13 +13,13 @@ chmod -R 755 /media
 echo "📦 Installing dependencies..."
 pip install -r requirements.txt
 
-# Collect and compress static files
+# Collect static files
 echo "📚 Collecting static files..."
 python manage.py collectstatic --noinput
 
-# Optional: Compress static files
-echo "🗜️ Compressing static files..."
-python manage.py compress --force
+# Optional: Try to compress static files, but don't fail if it errors
+echo "🗜️ Attempting to compress static files..."
+python manage.py compress --force || echo "⚠️ Compression skipped - no compress tags found (this is okay)"
 
 # Make start script executable
 chmod +x start.sh
