@@ -14,3 +14,4 @@ gunicorn>=21.2.0
 whitenoise>=6.5.0
 dj-database-url>=0.5.0
 sentry-sdk>=1.0.0
+django-db-connection-pool>=1.2.2  # For PostgreSQL connection pooling

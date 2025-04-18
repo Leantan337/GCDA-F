@@ -7,12 +7,13 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
-# Load env variables
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    pass
+# Load env variables in development only
+if os.environ.get('RAILWAY_ENVIRONMENT') != 'production':
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        pass
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,14 +24,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-# Add Render domains to allowed hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
-# Add any *.onrender.com domains
-ALLOWED_HOSTS.extend(['.onrender.com'])
+# Allowed Hosts
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.up.railway.app']
 
 # Application definition
 INSTALLED_APPS = [
@@ -60,6 +55,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'crispy_forms',
     'crispy_bootstrap4',  
+    'whitenoise',  # Added whitenoise for static file storage
 
     # Local apps
     'apps.core.apps.CoreConfig',
@@ -74,7 +70,7 @@ SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Added WhiteNoise middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -106,22 +102,37 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# Use PostgreSQL on Render, SQLite locally
+# Database configuration
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
-    # Parse database URL for PostgreSQL on Render
+    # Parse database URL for PostgreSQL on Railway
     db_url = urlparse(DATABASE_URL)
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django_db_pool.db.backends.postgresql',  # Using connection pooling
             'NAME': db_url.path[1:],
             'USER': db_url.username,
             'PASSWORD': db_url.password,
             'HOST': db_url.hostname,
             'PORT': db_url.port,
+            # Connection pooling settings
+            'POOL_OPTIONS': {
+                'POOL_SIZE': 20,
+                'MAX_OVERFLOW': 10,
+                'RECYCLE': 300,  # Connection timeouts after 5 minutes
+            },
+            # Resilient PostgreSQL settings
+            'OPTIONS': {
+                'connect_timeout': 10,
+                'sslmode': 'require',
+            },
+            'CONN_MAX_AGE': 0,  # Disable Django's connection persistence for pooling
         }
     }
+    
+    # Add connection pooling backend
+    INSTALLED_APPS.append('django_db_pool')
+    
 else:
     # Use SQLite for local development
     DATABASES = {
@@ -153,19 +164,28 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static and Media files configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_URL = '/media/'
+
+# In production, use Railway's persistent volume
+if os.environ.get('RAILWAY_ENVIRONMENT') == 'production':
+    # Use Railway's persistent volume for both static and media files
+    STATIC_ROOT = '/media/staticfiles/'
+    MEDIA_ROOT = '/media/uploads/'
+else:
+    # Local development paths
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Additional static files locations
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Enable WhiteNoise for static files in production
+# WhiteNoise configuration
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -183,10 +203,8 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend
 if DEBUG:
     WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
-elif RENDER_EXTERNAL_HOSTNAME:
-    WAGTAILADMIN_BASE_URL = f'https://{RENDER_EXTERNAL_HOSTNAME}'
 else:
-    WAGTAILADMIN_BASE_URL = 'https://gcda.onrender.com'
+    WAGTAILADMIN_BASE_URL = os.environ.get('WAGTAILADMIN_BASE_URL', 'https://gcda.up.railway.app')
 
 # Email settings (use console in development, configure for production)
 if DEBUG:

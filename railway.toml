@@ -1,0 +1,21 @@
+[build]
+builder = "nixpacks"
+buildCommand = """
+# Create necessary directories in the persistent volume
+mkdir -p /media/staticfiles
+mkdir -p /media/uploads
+chmod -R 755 /media
+
+# Run Django commands
+python manage.py collectstatic --noinput
+python manage.py migrate
+"""
+
+[deploy]
+startCommand = "gunicorn config.wsgi:application"
+healthcheckPath = "/admin/login/"
+healthcheckTimeout = 100
+restartPolicyType = "on_failure"
+
+[volumes]
+media = "/media"
