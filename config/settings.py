@@ -223,7 +223,7 @@ if USE_S3:
     WAGTAILIMAGES_STORAGE = 'config.storage_backends.MediaStorage'
     WAGTAILDOCS_STORAGE = 'config.storage_backends.MediaStorage'
     
-    # Media URL for S3 - using 'media/' as the URL prefix but empty location in storage class
+    # Media URL for S3 - matches the 'media' location in storage class
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 # Configure Wagtail to use the database for image renditions

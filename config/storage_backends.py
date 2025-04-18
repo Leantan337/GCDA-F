@@ -7,6 +7,6 @@ class MediaStorage(S3Boto3Storage):
     Storage for user-uploaded media files.
     These will be properly stored in the S3 bucket.
     """
-    location = ''  # Changed from 'media' to prevent path duplication
+    location = 'media'  # Store files in the media/ directory in S3
     # Remove default_acl as it's not supported with the current bucket settings
     file_overwrite = False
