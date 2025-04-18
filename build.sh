@@ -13,16 +13,13 @@ chmod -R 755 /media
 echo "📦 Installing dependencies..."
 pip install -r requirements.txt
 
-# Create static directory if it doesn't exist
-echo "📁 Creating static directory..."
-mkdir -p static/assets/img
+# Create static directory structure
+echo "📁 Creating static directory structure..."
+mkdir -p static/assets/{css,js,img}
 
-# Create a simple placeholder image if needed
-echo "🖼️ Setting up default images..."
-if [ ! -f static/assets/img/testimonials-bg.jpg ]; then
-    echo "⚠️ Creating empty placeholder image..."
-    convert -size 1920x1080 xc:gray static/assets/img/testimonials-bg.jpg || true
-fi
+# Create empty placeholder files to prevent WhiteNoise errors
+echo "📄 Creating placeholder files..."
+touch static/assets/img/testimonials-bg.jpg
 
 # Collect static files
 echo "📚 Collecting static files..."

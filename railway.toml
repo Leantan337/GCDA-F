@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "apt-get update && apt-get install -y imagemagick && chmod +x build.sh && ./build.sh"
+buildCommand = "chmod +x build.sh && ./build.sh"
 
 [deploy]
 startCommand = "chmod +x start.sh && ./start.sh"
