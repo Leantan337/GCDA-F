@@ -7,6 +7,13 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
+# Optional imports - these may not be available during build
+dj_database_url = None
+try:
+    import dj_database_url
+except ImportError:
+    pass
+
 # Load env variables in development only
 if os.environ.get('RAILWAY_ENVIRONMENT') != 'production':
     try:
@@ -102,51 +109,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database configuration
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    # Parse database URL for PostgreSQL on Railway
-    try:
-        db_url = urlparse(DATABASE_URL)
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': db_url.path[1:],  # Remove leading slash
-                'USER': db_url.username,
-                'PASSWORD': db_url.password,
-                'HOST': db_url.hostname,
-                'PORT': db_url.port or '5432',  # Default to 5432 if not specified
-                # Resilient PostgreSQL settings
-                'OPTIONS': {
-                    'connect_timeout': 10,
-                    'sslmode': 'require',
-                    'keepalives': 1,
-                    'keepalives_idle': 30,
-                    'keepalives_interval': 10,
-                    'keepalives_count': 5,
-                },
-                # Connection persistence settings
-                'CONN_MAX_AGE': 60,  # Persistent connections, 60 seconds
-                'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
-            }
-        }
-    except Exception as e:
-        print(f"Warning: Error parsing DATABASE_URL: {e}")
-        # Fallback to SQLite in case of parsing error
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
-else:
-    # Use SQLite for local development
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+# Database
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSWORD'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': os.environ.get('PGPORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'require' if os.environ.get('RAILWAY_ENVIRONMENT') == 'production' else 'prefer',
+            'connect_timeout': 60,
         }
     }
+}
+
+# Use DATABASE_URL if provided (Railway's format)
+if os.environ.get('DATABASE_URL') and dj_database_url is not None:
+    try:
+        DATABASES['default'] = dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=os.environ.get('RAILWAY_ENVIRONMENT') == 'production'
+        )
+    except Exception as e:
+        print(f"Warning: Could not configure database using DATABASE_URL: {e}")
+        # Keep using the default DATABASES configuration
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
