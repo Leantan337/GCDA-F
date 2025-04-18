@@ -111,18 +111,12 @@ if DATABASE_URL:
         db_url = urlparse(DATABASE_URL)
         DATABASES = {
             'default': {
-                'ENGINE': 'django_db_pool.db.backends.postgresql',
+                'ENGINE': 'django.db.backends.postgresql',
                 'NAME': db_url.path[1:],  # Remove leading slash
                 'USER': db_url.username,
                 'PASSWORD': db_url.password,
                 'HOST': db_url.hostname,
                 'PORT': db_url.port or '5432',  # Default to 5432 if not specified
-                # Connection pooling settings
-                'POOL_OPTIONS': {
-                    'POOL_SIZE': int(os.environ.get('DB_POOL_SIZE', '20')),
-                    'MAX_OVERFLOW': int(os.environ.get('DB_MAX_OVERFLOW', '10')),
-                    'RECYCLE': 300,
-                },
                 # Resilient PostgreSQL settings
                 'OPTIONS': {
                     'connect_timeout': 10,
@@ -132,15 +126,11 @@ if DATABASE_URL:
                     'keepalives_interval': 10,
                     'keepalives_count': 5,
                 },
-                'CONN_MAX_AGE': 0,  # Disable Django's connection persistence for pooling
-                'ATOMIC_REQUESTS': False,  # Disable automatic transactions for better performance
+                # Connection persistence settings
+                'CONN_MAX_AGE': 60,  # Persistent connections, 60 seconds
+                'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
             }
         }
-        
-        # Add connection pooling backend
-        if 'django_db_pool' not in INSTALLED_APPS:
-            INSTALLED_APPS.append('django_db_pool')
-            
     except Exception as e:
         print(f"Warning: Error parsing DATABASE_URL: {e}")
         # Fallback to SQLite in case of parsing error
