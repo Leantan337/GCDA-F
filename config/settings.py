@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
-    'wagtail.contrib.modeladmin',
     'wagtail.contrib.settings',
     'wagtail.embeds',
     'wagtail.sites',
@@ -49,7 +48,8 @@ INSTALLED_APPS = [
     'wagtail.images',
     'wagtail.search',
     'wagtail.admin',
-    'wagtail',  # This replaces wagtail.core
+    'wagtail',
+    'wagtail_modeladmin',  # Using standalone package
     
     'modelcluster',
     'taggit',
@@ -57,8 +57,10 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'whitenoise',  # Added whitenoise for static file storage
+    
+    # Your apps
     'apps.core.apps.CoreConfig',
-    'apps.news.apps.NewsConfig',  
+    'apps.news.apps.NewsConfig',
     'apps.donations.apps.DonationsConfig',
     'apps.engagement.apps.EngagementConfig',
     'apps.comments.apps.CommentsConfig',
@@ -169,45 +171,37 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files configuration
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-
-# In production, use Railway's persistent volume
-if os.environ.get('RAILWAY_ENVIRONMENT') == 'production':
-    # Use Railway's persistent volume for both static and media files
-    STATIC_ROOT = '/media/staticfiles/'
-    MEDIA_ROOT = '/media/uploads/'
-else:
-    # Local development paths
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Additional static files configuration
+STATIC_ROOT = '/media/staticfiles'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    BASE_DIR / 'static',
 ]
 
 # WhiteNoise configuration
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False  # Don't fail on missing files
+WHITENOISE_USE_FINDERS = True  # Look for files in STATICFILES_DIRS during collectstatic
 
-# Django Compressor settings
-COMPRESS_ENABLED = not DEBUG
-COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
-COMPRESS_URL = STATIC_URL
-COMPRESS_ROOT = STATIC_ROOT
-COMPRESS_OUTPUT_DIR = 'compressed'
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter',
-    'compressor.filters.cssmin.rCSSMinFilter',
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/media/uploads'
+
+# AWS S3 Configuration for media files
+if os.environ.get('USE_S3', '').lower() == 'true':
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'eu-north-1')
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = 'public-read'
+    DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
+
+# Static files finders
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
-COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
