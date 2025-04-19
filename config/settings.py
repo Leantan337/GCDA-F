@@ -125,14 +125,14 @@ if os.environ.get('DATABASE_URL') and dj_database_url is not None:
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': '/media/db.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
             }
         }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': '/media/db.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
