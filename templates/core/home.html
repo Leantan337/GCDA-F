@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load wagtailimages_tags %}
 
 {% block title %}Green Community Development Association{% endblock %}
 
@@ -338,10 +339,11 @@
       {% for news_item in latest_news %}
       <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
         <div class="portfolio-item">
-          {% if news_item.image %}
-          <img src="{{ news_item.image.url }}" class="img-fluid" alt="{{ news_item.title }}">
+          {% if news_item.featured_image %}
+            {% image news_item.featured_image fill-400x300 as photo %}
+            <img src="{{ photo.url }}" class="img-fluid" alt="{{ news_item.title }}">
           {% else %}
-          <img src="{% static 'assets/img/portfolio/news-default.jpg' %}" class="img-fluid" alt="{{ news_item.title }}">
+            <img src="/static/assets/img/portfolio/news-default.jpg" class="img-fluid" alt="No Image">
           {% endif %}
           <div class="portfolio-info">
             <h4>{{ news_item.title }}</h4>
