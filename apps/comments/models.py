@@ -27,7 +27,7 @@ class Comment(models.Model):
         auto_now_add=True
     )
     is_approved = models.BooleanField(
-        default=models.NOT_PROVIDED,
+        default=False,
         help_text="Whether the comment is approved and visible"
     )
     approved_by = models.ForeignKey(

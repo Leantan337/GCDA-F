@@ -4,6 +4,7 @@ Core views for the NGO website.
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import JsonResponse
+from django.urls import reverse
 from apps.news.models import NewsPage
 
 def index(request):
@@ -36,7 +37,7 @@ def contact(request):
         # For now, just return a success message
         
         messages.success(request, 'Your message has been sent successfully!')
-        return redirect('core:home')
+        return redirect(reverse('core:home'))
         
     # If not POST, redirect to home with contact section
-    return redirect('core:home#contact')
+    return redirect(reverse('core:home') + '#contact')

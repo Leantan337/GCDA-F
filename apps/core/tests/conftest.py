@@ -3,11 +3,16 @@ try:
 except ImportError:
     raise ImportError("pytest is required. Please install it using 'pip install pytest'")
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from wagtail.models import Page, Site
 from wagtail.test.utils import WagtailTestUtils
 from wagtail_factories import PageFactory, SiteFactory
 
 from apps.core.models import HomePage
+
+@pytest.fixture(autouse=True)
+def set_test_staticfiles_storage(settings):
+    settings.STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 @pytest.fixture
 def admin_user():

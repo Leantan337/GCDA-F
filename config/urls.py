@@ -16,6 +16,7 @@ urlpatterns = [
     # path('accounts/', include('accounts.urls')),  # Removed accounts
     path('', include('apps.core.urls', namespace='core')),
     path('news/', include('apps.news.urls')),
+    path('comments/', include(('apps.comments.urls', 'comments'), namespace='comments')),
     path('', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
@@ -30,5 +31,6 @@ urlpatterns = [
     # path('accounts/', include('accounts.urls')),  # Removed accounts
     path('', include('apps.core.urls', namespace='core')),
     path('news/', include('apps.news.urls')),
+    path('comments/', include(('apps.comments.urls', 'comments'), namespace='comments')),
     path('', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
