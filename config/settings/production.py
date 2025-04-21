@@ -29,6 +29,11 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://your-render-app.onrender.com',  # Replace with your actual Render domain
+]
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {

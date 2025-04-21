@@ -207,7 +207,7 @@ WAGTAILSEARCH_BACKENDS = {
 if DEBUG:
     WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
 else:
-    WAGTAILADMIN_BASE_URL = os.environ.get('WAGTAILADMIN_BASE_URL', 'https://gcda.up.railway.app')
+    WAGTAILADMIN_BASE_URL = os.environ.get('WAGTAILADMIN_BASE_URL', 'https://your-app-name.onrender.com')
 
 # Email settings (use console in development, configure for production)
 if DEBUG:

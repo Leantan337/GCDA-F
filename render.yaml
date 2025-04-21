@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: gcda-django
+    env: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:10000
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_STORAGE_BUCKET_NAME
+        sync: false
+      - key: AWS_S3_REGION_NAME
+        value: eu-north-1
+      - key: USE_S3
+        value: 'True'
+    autoDeploy: true
+    disk:
+      name: media
+      mountPath: /media
+      sizeGB: 1
+    staticPublishPath: /static
