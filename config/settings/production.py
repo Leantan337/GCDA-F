@@ -30,9 +30,19 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
-# Database - Explicit PostgreSQL configuration for Render
+# Database configuration for Render
 DATABASES = {
-    'default': {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=True
+    )
+}
+
+# Fallback to explicit PostgreSQL config if DATABASE_URL not provided
+if not os.environ.get('DATABASE_URL'):
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
@@ -43,15 +53,6 @@ DATABASES = {
             'sslmode': 'require'
         }
     }
-}
-
-# Fallback to DATABASE_URL if provided
-if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
 
 # Security
 SECURE_SSL_REDIRECT = True
@@ -63,7 +64,7 @@ X_FRAME_OPTIONS = 'DENY'
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    'https://your-render-app.onrender.com',  # Replace with your actual Render domain
+    'https://gcda-f-2nlr.onrender.com',  # Replace with your actual Render domain
 ]
 
 # Password validation
