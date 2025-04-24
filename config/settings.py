@@ -15,7 +15,7 @@ except ImportError:
     pass
 
 # Load env variables in development only
-if os.environ.get('RAILWAY_ENVIRONMENT') != 'production':
+if os.environ.get('RENDER_ENVIRONMENT') != 'production':
     try:
         from dotenv import load_dotenv
         load_dotenv()
@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here'
 DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 # Allowed Hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.up.railway.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -116,7 +116,7 @@ if os.environ.get('DATABASE_URL') and dj_database_url is not None:
             'default': dj_database_url.config(
                 conn_max_age=600,
                 conn_health_checks=True,
-                ssl_require=os.environ.get('RAILWAY_ENVIRONMENT') == 'production'
+                ssl_require=os.environ.get('RENDER_ENVIRONMENT') == 'production'
             )
         }
     except Exception as e:
@@ -160,29 +160,39 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = '/media/staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    os.path.join(BASE_DIR, 'static'),
 ]
 
-# WhiteNoise configuration
+# WhiteNoise configuration for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 WHITENOISE_USE_FINDERS = True
 
-# Media files
+# Media files configuration
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/media/uploads'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
-# AWS S3 Configuration for media files
+# AWS S3 Configuration
 if os.environ.get('USE_S3', '').lower() == 'true':
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'eu-north-1')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = 'public-read'
-    DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    
+    # Use S3 for media storage
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+else:
+    # Use local storage for media in development
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Static files finders
 STATICFILES_FINDERS = [
