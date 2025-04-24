@@ -7,7 +7,7 @@ services:
     startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:10000
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: config.settings
+        value: config.settings.production
       - key: PYTHON_VERSION
         value: 3.11
       - key: AWS_ACCESS_KEY_ID
