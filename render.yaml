@@ -20,6 +20,8 @@ services:
         value: eu-north-1
       - key: USE_S3
         value: 'True'
+      - key: DATABASE_URL
+        sync: false
     autoDeploy: true
     disk:
       name: media
