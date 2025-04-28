@@ -50,10 +50,10 @@ else:
     # Fallback explicit PostgreSQL configuration
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gcda_postgate',
-        'USER': 'gcda_postgate_user',
-        'PASSWORD': 'rxTWsesbqMgX5cFlO6PKVCrgpgu47kG8',
-        'HOST': 'dpg-d04ul9je5dus738ne9r0-a.oregon-postgres.render.com',
+        'NAME': 'gcda',
+        'USER': 'gcda_user',
+        'PASSWORD': 'WzZLASKrx1bYSCf2fLURjhTETjipHEoy',
+        'HOST': 'dpg-d07rsgvdiees73bh6h60-a.oregon-postgres.render.com',
         'PORT': '5432',
         'OPTIONS': {
             'sslmode': 'require'
