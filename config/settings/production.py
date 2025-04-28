@@ -78,16 +78,25 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
-# Cache
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.environ.get('REDIS_URL'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+# Cache configuration
+if os.environ.get('REDIS_URL'):
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': os.environ.get('REDIS_URL'),
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            }
         }
     }
-}
+else:
+    # Fallback to local memory cache if Redis is not configured
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake',
+        }
+    }
 
 # Static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

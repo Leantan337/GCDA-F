@@ -21,7 +21,7 @@ services:
       - key: USE_S3
         value: 'True'
       - key: DATABASE_URL
-        sync: true  
+        sync: true
     autoDeploy: true
     disk:
       name: media
