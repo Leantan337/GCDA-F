@@ -122,24 +122,16 @@ if os.environ.get('DATABASE_URL'):
     if dj_database_url is None:
         raise ImportError('dj-database-url package is required but not installed')
     try:
-        DATABASES['default'] = dj_database_url.parse(
-            os.environ.get('DATABASE_URL'),
+        DATABASES['default'] = dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
             conn_max_age=600,
             conn_health_checks=True,
+            ssl_require=True,
         )
     except Exception as e:
         print(f'Error configuring database from URL: {e}')
-# Fallback to explicit PostgreSQL configuration if no DATABASE_URL but in production
-elif os.environ.get('RENDER_ENVIRONMENT') == 'production':
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gcda_postgate',
-        'USER': 'gcda_postgate_user',
-        'PASSWORD': 'rxTWsesbqMgX5cFlO6PKVCrgpgu47kG8',
-        'HOST': 'dpg-d04ul9je5dus738ne9r0-a.oregon-postgres.render.com',
-        'PORT': '5432',
-        'CONN_MAX_AGE': 600,
-        'CONN_HEALTH_CHECKS': True,
+        if os.environ.get('RENDER_ENVIRONMENT') == 'production':
+            raise  # Re-raise in production to fail fast
     }
 
 # Password validation
