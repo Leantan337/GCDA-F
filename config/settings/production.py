@@ -3,7 +3,7 @@ Production settings for NGO Website.
 """
 import os
 import dj_database_url
-from .base import *  # noqa
+from config.settings.base import *  # noqa
 
 # AWS S3 settings
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
@@ -30,24 +30,15 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
-# Database configuration for Render
+# Database configuration for production
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gcda',
-        'USER': 'gcda_user',
-        'PASSWORD': 'WzZLASKrx1bYSCf2fLURjhTETjipHEoy',
-        'HOST': 'dpg-d07rsgvdiees73bh6h60-a.oregon-postgres.render.com',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require'
-        }
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=True
+    )
 }
-
-# Override with DATABASE_URL if available for flexibility
-if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
 
 # Security
 SECURE_SSL_REDIRECT = True
