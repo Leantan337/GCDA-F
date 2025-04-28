@@ -132,7 +132,6 @@ if os.environ.get('DATABASE_URL'):
         print(f'Error configuring database from URL: {e}')
         if os.environ.get('RENDER_ENVIRONMENT') == 'production':
             raise  # Re-raise in production to fail fast
-    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

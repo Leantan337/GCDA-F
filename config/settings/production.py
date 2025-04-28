@@ -32,27 +32,18 @@ ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
 # Database configuration for Render
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True
-    )
-}
-
-# Fallback to explicit PostgreSQL config if DATABASE_URL not provided
-if not os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'NAME': 'gcda_postgate',
+        'USER': 'gcda_postgate_user',
+        'PASSWORD': 'rxTWsesbqMgX5cFlO6PKVCrgpgu47kG8',
+        'HOST': 'dpg-d04ul9je5dus738ne9r0-a.oregon-postgres.render.com',
+        'PORT': '5432',
         'OPTIONS': {
             'sslmode': 'require'
         }
     }
+}
 
 # Security
 SECURE_SSL_REDIRECT = True
