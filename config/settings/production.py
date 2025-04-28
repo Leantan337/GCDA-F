@@ -30,9 +30,25 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
-# Database configuration for Render
-DATABASES = {
-    'default': {
+# Database configuration for Render using DATABASE_URL
+DATABASES = {}
+
+# Use DATABASE_URL from environment if available
+if os.environ.get('DATABASE_URL'):
+    try:
+        DATABASES['default'] = dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        )
+        print(f"Connected to PostgreSQL via DATABASE_URL")
+    except Exception as e:
+        print(f"Error configuring database from URL: {e}")
+        raise  # Re-raise in production to fail fast
+else:
+    # Fallback explicit PostgreSQL configuration
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'gcda_postgate',
         'USER': 'gcda_postgate_user',
@@ -43,7 +59,6 @@ DATABASES = {
             'sslmode': 'require'
         }
     }
-}
 
 # Security
 SECURE_SSL_REDIRECT = True
