@@ -109,29 +109,32 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database Configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Update database configuration from DATABASE_URL if available
-if os.environ.get('DATABASE_URL'):
-    if dj_database_url is None:
-        raise ImportError('dj-database-url package is required but not installed')
+# Database configuration: Use PostgreSQL if DATABASE_URL is present, otherwise fallback to SQLite3 for demo
+if os.environ.get('DATABASE_URL') and dj_database_url is not None:
     try:
-        DATABASES['default'] = dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        )
+        DATABASES = {
+            'default': dj_database_url.config(
+                conn_max_age=600,
+                conn_health_checks=True,
+                ssl_require=os.environ.get('RENDER_ENVIRONMENT') == 'production'
+            )
+        }
     except Exception as e:
-        print(f'Error configuring database from URL: {e}')
-        if os.environ.get('RENDER_ENVIRONMENT') == 'production':
-            raise  # Re-raise in production to fail fast
+        print(f"Warning: Could not configure database using DATABASE_URL: {e}")
+        # Fallback to SQLite3
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
