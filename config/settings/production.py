@@ -39,7 +39,18 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
+# Always include the Render domain in ALLOWED_HOSTS
+ALLOWED_HOSTS = [
+    'gcda-f-2nlr.onrender.com',
+    '.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
+
+# Add any additional hosts from environment variable
+additional_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
+if additional_hosts and additional_hosts[0]:  # Only extend if not empty
+    ALLOWED_HOSTS.extend([host.strip() for host in additional_hosts if host.strip()])
 
 # Database configuration for production
 DATABASES = {
