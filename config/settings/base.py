@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # Local apps
     'apps.core',
     'apps.news.apps.NewsConfig',
+    'apps.comments.apps.CommentsConfig',
 ]
 
 MIDDLEWARE = [
