@@ -8,6 +8,8 @@ from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel
 
 class EngagementEvent(models.Model):
+    class Meta:
+        app_label = 'engagement'
     """Model to track user engagement events."""
     EVENT_TYPES = [
         ('view', 'Page View'),
@@ -57,6 +59,8 @@ class EngagementEvent(models.Model):
         return f"{self.event_type} by {self.user} on {self.page}"
 
 class NewsletterSubscription(models.Model):
+    class Meta:
+        app_label = 'engagement'
     """Newsletter subscription management."""
     email = models.EmailField(
         unique=True,

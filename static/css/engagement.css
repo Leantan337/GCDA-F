@@ -1,0 +1,120 @@
+/* Newsletter Form Styles */
+.newsletter-form {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 10px;
+  margin: 40px 0;
+}
+
+.newsletter-subscription-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.newsletter-subscription-form .form-control {
+  height: 50px;
+  border-radius: 8px;
+}
+
+.newsletter-subscription-form .btn {
+  height: 50px;
+  font-weight: 600;
+}
+
+/* Unsubscribe Page Styles */
+.unsubscribe-section {
+  padding: 80px 0;
+}
+
+.unsubscribe-section .card {
+  max-width: 500px;
+  margin: 0 auto;
+  border: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 15px;
+}
+
+.unsubscribe-section .card-body {
+  padding: 40px;
+}
+
+.unsubscribe-section i {
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+/* Share Buttons */
+.share-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.share-button:hover {
+  opacity: 0.9;
+  color: #fff;
+}
+
+.share-button i {
+  margin-right: 8px;
+}
+
+.share-button.facebook {
+  background-color: #3b5998;
+}
+
+.share-button.twitter {
+  background-color: #1da1f2;
+}
+
+.share-button.linkedin {
+  background-color: #0077b5;
+}
+
+/* Download Links */
+.download-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.download-link:hover {
+  background: #e9ecef;
+}
+
+.download-link i {
+  margin-right: 10px;
+  color: #28a745;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .newsletter-subscription-form .row > div {
+    margin-bottom: 15px;
+  }
+  
+  .share-buttons {
+    flex-direction: column;
+  }
+  
+  .share-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

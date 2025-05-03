@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Donation Campaigns{% endblock %}
+
+{% block content %}
+<section class="campaigns-section">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Campaigns</h2>
+      <h3>Our Active <span>Campaigns</span></h3>
+      <p>Support our various initiatives and help make a difference in the community.</p>
+    </div>
+
+    <div class="row">
+      {% if campaigns %}
+        {% for campaign in campaigns %}
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+              {% if campaign.image %}
+                <img src="{{ campaign.image.url }}" class="card-img-top" alt="{{ campaign.title }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ campaign.title }}</h5>
+                <p class="card-text">{{ campaign.description|truncatewords:50 }}</p>
+                <div class="progress mb-3">
+                  <div class="progress-bar" role="progressbar" style="width: {{ campaign.progress_percentage }}%" aria-valuenow="{{ campaign.progress_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ campaign.progress_percentage }}%
+                  </div>
+                </div>
+                <p class="text-muted">
+                  Raised: ${{ campaign.amount_raised }} of ${{ campaign.target_amount }}
+                </p>
+                <div class="d-grid gap-2">
+                  <a href="{% url 'donations:campaign_detail' campaign.pk %}" 
+                     class="btn btn-outline-primary">Learn More</a>
+                  <a href="{% url 'donations:donation_page' %}?campaign={{ campaign.pk }}" 
+                     class="btn btn-primary">Donate Now</a>
+                </div>
+              </div>
+              <div class="card-footer text-muted">
+                {% if campaign.end_date %}
+                  Ends on: {{ campaign.end_date|date:"F j, Y" }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-12">
+          <div class="alert alert-info">
+            There are no active campaigns at the moment. Please check back later or make a general donation.
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

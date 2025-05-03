@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}Thank You for Your Donation{% endblock %}
+
+{% block content %}
+<section class="thank-you-section">
+  <div class="container" data-aos="fade-up">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <div class="thank-you-content">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+          <h2 class="mt-4">Thank You for Your Generous Support!</h2>
+          
+          {% if page %}
+            <div class="rich-text mt-4">
+              {{ page.thank_you_text|richtext }}
+            </div>
+          {% else %}
+            <p class="lead mt-4">
+              Your donation will help us make a real difference in our community. 
+              We truly appreciate your support in helping us achieve our mission.
+            </p>
+          {% endif %}
+
+          <div class="mt-5">
+            <a href="{% url 'core:home' %}" class="btn btn-outline-primary me-3">
+              Return to Homepage
+            </a>
+            <a href="{% url 'donations:campaign_list' %}" class="btn btn-primary">
+              View Other Campaigns
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ campaign.title }}{% endblock %}
+
+{% block content %}
+<section class="campaign-detail">
+  <div class="container" data-aos="fade-up">
+    <div class="row">
+      <div class="col-lg-8">
+        <article class="campaign-content">
+          {% if campaign.image %}
+            <div class="campaign-image mb-4">
+              <img src="{{ campaign.image.url }}" class="img-fluid" alt="{{ campaign.title }}">
+            </div>
+          {% endif %}
+          
+          <h2 class="campaign-title">{{ campaign.title }}</h2>
+          
+          <div class="campaign-meta mb-4">
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <i class="bi bi-calendar"></i> Started: {{ campaign.start_date|date:"F j, Y" }}
+              </li>
+              {% if campaign.end_date %}
+                <li class="list-inline-item">
+                  <i class="bi bi-clock"></i> Ends: {{ campaign.end_date|date:"F j, Y" }}
+                </li>
+              {% endif %}
+              <li class="list-inline-item">
+                <i class="bi bi-people"></i> {{ campaign.donations.count }} Donors
+              </li>
+            </ul>
+          </div>
+
+          <div class="campaign-progress mb-4">
+            <h4>Campaign Progress</h4>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: {{ campaign.progress_percentage }}%" aria-valuenow="{{ campaign.progress_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                {{ campaign.progress_percentage }}%
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-2">
+              <span>Raised: ${{ campaign.amount_raised }}</span>
+              <span>Goal: ${{ campaign.target_amount }}</span>
+            </div>
+          </div>
+
+          <div class="campaign-description">
+            {{ campaign.description|safe }}
+          </div>
+
+          {% if campaign.updates.exists %}
+            <div class="campaign-updates mt-5">
+              <h4>Campaign Updates</h4>
+              {% for update in campaign.updates.all %}
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ update.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      {{ update.date|date:"F j, Y" }}
+                    </h6>
+                    <div class="card-text">
+                      {{ update.content|safe }}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </article>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="campaign-sidebar">
+          <div class="card donation-form">
+            <div class="card-body">
+              <h4 class="card-title">Support this Campaign</h4>
+              <form method="post" action="{% url 'donations:make_donation' %}">
+                {% csrf_token %}
+                <input type="hidden" name="campaign" value="{{ campaign.pk }}">
+                <div class="mb-3">
+                  <label for="amount" class="form-label">Donation Amount ($)</label>
+                  <input type="number" class="form-control" id="amount" name="amount" 
+                         min="1" step="1" required>
+                </div>
+                <div class="mb-3">
+                  <label for="payment_method" class="form-label">Payment Method</label>
+                  <select name="payment_method" id="payment_method" class="form-select" required>
+                    <option value="card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank">Bank Transfer</option>
+                  </select>
+                </div>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="is_anonymous" 
+                         name="is_anonymous">
+                  <label class="form-check-label" for="is_anonymous">
+                    Make donation anonymous
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Donate Now</button>
+              </form>
+            </div>
+          </div>
+
+          {% if campaign.recent_donors %}
+            <div class="card mt-4">
+              <div class="card-body">
+                <h5 class="card-title">Recent Donors</h5>
+                <ul class="list-unstyled">
+                  {% for donation in campaign.recent_donors %}
+                    <li class="mb-2">
+                      {% if donation.is_anonymous %}
+                        <strong>Anonymous</strong>
+                      {% else %}
+                        <strong>{{ donation.donor.get_full_name|default:donation.donor.username }}</strong>
+                      {% endif %}
+                      <br>
+                      <small class="text-muted">${{ donation.amount }} - {{ donation.donation_date|date:"M j, Y" }}</small>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

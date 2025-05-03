@@ -29,6 +29,8 @@ class DonationPage(Page):
 
 class DonationCampaign(models.Model):
     """A specific donation campaign."""
+    class Meta:
+        app_label = 'donations'
     title = models.CharField(max_length=200)
     description = RichTextField()
     goal_amount = models.DecimalField(
@@ -62,6 +64,8 @@ class DonationCampaign(models.Model):
 
 class Donation(models.Model):
     """Individual donation record."""
+    class Meta:
+        app_label = 'donations'
     PAYMENT_METHODS = [
         ('card', 'Credit Card'),
         ('paypal', 'PayPal'),

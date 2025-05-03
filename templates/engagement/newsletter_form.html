@@ -1,0 +1,22 @@
+{% load static %}
+
+<div class="newsletter-form">
+  <form method="post" action="{% url 'engagement:newsletter_subscribe' %}" class="newsletter-subscription-form">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-5">
+        <div class="form-group">
+          <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="form-group">
+          <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Newsletter Unsubscribe{% endblock %}
+
+{% block content %}
+<section class="unsubscribe-section">
+  <div class="container" data-aos="fade-up">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body text-center">
+            <i class="bi bi-envelope-x text-danger" style="font-size: 4rem;"></i>
+            <h2 class="mt-4">Unsubscribe from Newsletter</h2>
+            <p class="lead">
+              We're sorry to see you go! Please confirm that you want to unsubscribe 
+              from our newsletter.
+            </p>
+            <form method="post" action="{% url 'engagement:newsletter_unsubscribe' email=email %}">
+              {% csrf_token %}
+              <p class="mb-4">Email: {{ email }}</p>
+              <button type="submit" class="btn btn-danger">Confirm Unsubscribe</button>
+              <a href="{% url 'core:home' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

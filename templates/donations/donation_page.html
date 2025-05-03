@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block title %}Donate - {{ page.title }}{% endblock %}
+
+{% block content %}
+<section class="donation-page">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Support Our Cause</h2>
+      <h3>Make a <span>Donation</span></h3>
+      <div class="rich-text">
+        {{ page.description|richtext }}
+      </div>
+    </div>
+
+    <div class="row">
+      {% if campaigns %}
+        <div class="col-lg-8">
+          <div class="campaigns-list">
+            <h4>Current Campaigns</h4>
+            <div class="row">
+              {% for campaign in campaigns %}
+                <div class="col-md-6 mb-4">
+                  <div class="card h-100">
+                    {% if campaign.image %}
+                      <img src="{{ campaign.image.url }}" class="card-img-top" alt="{{ campaign.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                      <h5 class="card-title">{{ campaign.title }}</h5>
+                      <p class="card-text">{{ campaign.description|truncatewords:30 }}</p>
+                      <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ campaign.progress_percentage }}%"
+                             aria-valuenow="{{ campaign.progress_percentage }}" 
+                             aria-valuemin="0" aria-valuemax="100">
+                          {{ campaign.progress_percentage }}%
+                        </div>
+                      </div>
+                      <p class="text-muted">
+                        Raised: ${{ campaign.amount_raised }} of ${{ campaign.target_amount }}
+                      </p>
+                      <a href="{% url 'donations:campaign_detail' campaign.pk %}" 
+                         class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="donation-form card">
+            <div class="card-body">
+              <h4 class="card-title">Make a Donation</h4>
+              <form method="post" action="{% url 'donations:make_donation' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="campaign" class="form-label">Choose Campaign (Optional)</label>
+                  <select name="campaign" id="campaign" class="form-select">
+                    <option value="">General Donation</option>
+                    {% for campaign in campaigns %}
+                      <option value="{{ campaign.pk }}">{{ campaign.title }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="amount" class="form-label">Amount ($)</label>
+                  <input type="number" class="form-control" id="amount" name="amount" 
+                         min="1" step="1" required>
+                </div>
+                <div class="mb-3">
+                  <label for="payment_method" class="form-label">Payment Method</label>
+                  <select name="payment_method" id="payment_method" class="form-select" required>
+                    <option value="card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank">Bank Transfer</option>
+                  </select>
+                </div>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="is_anonymous" 
+                         name="is_anonymous">
+                  <label class="form-check-label" for="is_anonymous">
+                    Make donation anonymous
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Donate Now</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="col-12">
+          <div class="alert alert-info">
+            No active campaigns at the moment. You can still make a general donation.
+          </div>
+          <!-- Add general donation form here -->
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
