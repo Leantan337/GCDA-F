@@ -23,6 +23,7 @@ urlpatterns = [
 
 from django.conf import settings
 from django.conf.urls.static import static
+import debug_toolbar
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
@@ -32,5 +33,6 @@ urlpatterns = [
     path('', include('apps.core.urls', namespace='core')),
     path('news/', include('apps.news.urls')),
     path('comments/', include(('apps.comments.urls', 'comments'), namespace='comments')),
+    path('__debug__/', include(debug_toolbar.urls)),  # Add debug toolbar URLs
     path('', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

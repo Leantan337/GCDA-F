@@ -10,16 +10,7 @@ services:
         value: config.settings.production
       - key: PYTHON_VERSION
         value: 3.11
-      - key: AWS_ACCESS_KEY_ID
-        sync: false
-      - key: AWS_SECRET_ACCESS_KEY
-        sync: false
-      - key: AWS_STORAGE_BUCKET_NAME
-        sync: false
-      - key: AWS_S3_REGION_NAME
-        value: eu-north-1
-      - key: USE_S3
-        value: 'False'
+      # AWS S3 variables removed
       - key: DATABASE_URL
         sync: true
       - key: DJANGO_ALLOWED_HOSTS

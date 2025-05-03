@@ -41,3 +41,9 @@ def contact(request):
         
     # If not POST, redirect to home with contact section
     return redirect(reverse('core:home') + '#contact')
+
+def test_page(request):
+    """
+    Simple test page to verify development server configuration.
+    """
+    return render(request, 'test.html')
